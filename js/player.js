@@ -23,8 +23,8 @@ class Player {
         this.image.sourceX = 527
         this.image.sourceY = 34
 
-        this.posX = 20
-        this.posY = 100
+        this.posX = this.spriteWidth * 3 * this.scale - this.spriteWidth
+        this.posY = this.gameHeight - 120
         this.posY0 = 100
 
         this.keys = keys

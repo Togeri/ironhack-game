@@ -1,3 +1,6 @@
+// Esto debería estar separado por enemigos. Goompa debería tener un archivo, Turtle otro, y así
+
+
 class Enemy {
 
     constructor(ctx, enemyClass, canvasSize, gravity, scale, posX, posY, posY0, velX) {

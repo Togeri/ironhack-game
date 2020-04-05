@@ -50,14 +50,21 @@ const game = {
 
 
         this.canvasSize.width = window.innerWidth   //Esta linea y la 39 creo que sobran
-        this.canvasSize.height = window.innerHeight  - 5       // He tenido que hacer una ñapa porque si pongo el innerHeigth se me pone una scrollbar a la derecha como que el canvan ocupa más del window.Heigth
+        // this.canvasSize.height = window.innerHeight       // He tenido que hacer una ñapa porque si pongo el innerHeigth se me pone una scrollbar a la derecha como que el canvan ocupa más del window.Heigth
+        this.canvasSize.height = window.innerHeight -5    // He tenido que hacer una ñapa porque si pongo el innerHeigth se me pone una scrollbar a la derecha como que el canvan ocupa más del window.Heigth
         this.canvas.width = this.canvasSize.width
         this.canvas.height = this.canvasSize.height
     },
 
     start() {
         
-        // Todo esto son pruebas que luego serán sustituidas por un "mapLoad() method"
+        // Todo esto son pruebas que luego serán sustituidas por un "mapLoad() method, sobre todo la parte de enemies"
+
+        this.map = new Map(this.ctx, this.scale, this.canvasSize, 1, 1)
+        this.map.init()
+        this.map.build()
+
+
 
         this.player = new Player(this.ctx, this.canvasSize.width, this.canvasSize.height, this.keys, this.gravity, this.scale)
         this.player.image.onload = () => this.player.draw()
@@ -76,11 +83,13 @@ const game = {
     },
 
     drawAll() {
-        this.player.draw()
+        this.map.draw()
         this.enemies.forEach(enemy => {
             enemy.draw()
             enemy.actions()
         });
+
+        this.player.draw()
     },
 
     clear() {
