@@ -2,19 +2,19 @@
 
 
 class Map {
-    
+
     constructor(ctx, scale, canvasSize, world, level, player) {
-        
+
         this.ctx = ctx
         this.scale = scale
         this.canvasSize = {
             width: canvasSize.width,
             height: canvasSize.height
         }
-        
+
         this.world = world
         this.level = level
-        
+
         this.mapIdentifier = undefined
         this.image = undefined
 
@@ -31,7 +31,7 @@ class Map {
         this.backgroundTiles = [1, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
         // Tiles the Player Can Interact with 
         this.obstacleTiles = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 28, 29, 30, 31]
-        
+
         // Animation Class made for Objects
         this.animationObjects = []
 
@@ -43,12 +43,12 @@ class Map {
 
         this.posXmap = 0
         this.posYmap = 0
-        
-        
+
+
 
 
     }
-    
+
     init() {
         this.mapIdentifier = `map-${this.world}-${this.level}`
         this.image = new Image()
@@ -58,24 +58,24 @@ class Map {
     }
 
 
-    
-    
+
+
     draw() {
 
         this.posXmap = 0
         this.posYmap = 1
-        
+
         switch (this.mapIdentifier) {
-            
-            
+
+
             case "map-1-1":
                 // for (let posY = this.mapDrawIndexYStart; posY < this.mapDrawIndexYEnd; posY++) {
                 //     for (let posX = this.mapDrawIndexXStart; posX < this.mapDrawIndexXEnd; posX++) {
-                
+
 
                 for (let posY = 0; posY < map_1_1.length; posY++) {
                     for (let posX = 0; posX < map_1_1[posY].length; posX++) {
-                        
+
                         switch (map_1_1[posY][posX]) {
                             case 1:
                                 this.build("Sky", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
@@ -85,13 +85,13 @@ class Map {
                                 break;
                             case 3:
                                 this.build("Brick 1", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
-                                
+
                                 break;
                             case 4:
                                 this.build("Brick 2", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
-                                
+
                                 break;
-                            
+
                             case 6:
                                 this.build("Sky", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                                 this.build("Tube Up Top Left", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
@@ -156,7 +156,7 @@ class Map {
                             //     this.build("Sky", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                             //     this.build("Cloud 3", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                             //     break;
-                            
+
                             case 28:
                                 this.build("Question Box 1", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                                 this.animationObjects.filter(element => element.ID === `${posY}-${posX}`)[0].animateFrame()
@@ -174,8 +174,8 @@ class Map {
                             case 31:
                                 this.build("Question Box 4", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                                 break;
-                            
-                             case 32:
+
+                            case 32:
                                 this.build("Sky", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                                 this.build("Cloud Top Left", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                                 break;
@@ -199,27 +199,27 @@ class Map {
                                 this.build("Sky", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                                 this.build("Cloud Bot Right", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
                                 break;
-                            
-                            
+
+
                             default:
                                 break;
                         }
-                        
+
                         this.posXmap++
                     }
-                    
-                    
+
+
                     this.posYmap++
                 }
                 break;
-        
+
             default:
                 break;
         }
     }
 
     build(element, posX, posY, positionXSetOff, positionYSetOff) {
-        
+
         switch (element) {
 
             case "Sky":
@@ -231,7 +231,7 @@ class Map {
                     (this.tileSize * this.scale),
                 )
                 break
-            
+
             case "Floor":
                 this.ctx.drawImage(
                     this.image,
@@ -245,7 +245,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Brick 1":
                 this.ctx.drawImage(
                     this.image,
@@ -259,7 +259,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Brick 2":
                 this.ctx.drawImage(
                     this.image,
@@ -273,7 +273,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Hill 1":
                 this.ctx.drawImage(
                     this.image,
@@ -287,7 +287,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-                
+
             case "Hill 2":
                 this.ctx.drawImage(
                     this.image,
@@ -301,7 +301,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Hill 3":
                 this.ctx.drawImage(
                     this.image,
@@ -315,7 +315,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Hill 4":
                 this.ctx.drawImage(
                     this.image,
@@ -329,7 +329,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Hill 5":
                 this.ctx.drawImage(
                     this.image,
@@ -343,7 +343,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Hill 6":
                 this.ctx.drawImage(
                     this.image,
@@ -357,7 +357,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Grass 1":
                 this.ctx.drawImage(
                     this.image,
@@ -371,8 +371,8 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
-            
+
+
             case "Grass 2":
                 this.ctx.drawImage(
                     this.image,
@@ -386,7 +386,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Grass 3":
                 this.ctx.drawImage(
                     this.image,
@@ -400,7 +400,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Tube Up Top Left":
                 this.ctx.drawImage(
                     this.image,
@@ -414,7 +414,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Tube Up Top Right":
                 this.ctx.drawImage(
                     this.image,
@@ -428,7 +428,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Tube Up Bot Left":
                 this.ctx.drawImage(
                     this.image,
@@ -442,7 +442,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Tube Up Bot Right":
                 this.ctx.drawImage(
                     this.image,
@@ -456,7 +456,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Question Box 1":
                 this.ctx.drawImage(
                     this.image,
@@ -470,7 +470,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Question Box 2":
                 this.ctx.drawImage(
                     this.image,
@@ -484,7 +484,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Question Box 3":
                 this.ctx.drawImage(
                     this.image,
@@ -498,7 +498,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Question Box 4":
                 this.ctx.drawImage(
                     this.image,
@@ -512,7 +512,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Cloud Top Left":
                 this.ctx.drawImage(
                     this.image,
@@ -526,7 +526,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Cloud Top Center":
                 this.ctx.drawImage(
                     this.image,
@@ -540,7 +540,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Cloud Top Right":
                 this.ctx.drawImage(
                     this.image,
@@ -554,7 +554,7 @@ class Map {
                     this.boxSizeY
                 )
                 break
-            
+
             case "Cloud Bot Left":
                 this.ctx.drawImage(
                     this.image,
@@ -596,8 +596,8 @@ class Map {
                     this.boxSizeY
                 )
                 break
-        
-            
+
+
             default:
                 break
         }
@@ -647,7 +647,7 @@ class Map {
                             case 24:
                                 break;
 
-                            case 28: 
+                            case 28:
                                 this.animationObjects.push(new AnimationObject(this, map_1_1, "Question Box", this.ctx, posX, posY, this.tileSize))
                                 break;
                             case 29:

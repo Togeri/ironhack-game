@@ -24,8 +24,9 @@ class Player {
         this.image.sourceY = 34
 
         this.posX = this.spriteWidth * 3 * this.scale - this.spriteWidth
-        this.posY = this.gameHeight - 120
-        this.posY0 = 100
+        // this.posY = this.gameHeight - 168
+        this.posY = 100
+        this.posY0 = 700
 
         this.keys = keys
 
@@ -33,7 +34,8 @@ class Player {
             direction: "right",
             running: false,
             moving: false, // ??
-            jumping: false
+            jumping: false,
+            centered: false
         }
 
         this.velY = 1
@@ -44,23 +46,38 @@ class Player {
 
         this.fireBalls = []
 
+
         this.setListeners()
 
     }
 
     draw() {
         // Si no pongo el onload la imagen no me carga (linea 59 de game.js)
-        this.ctx.drawImage(
-            this.image,
-            this.image.sourceX,
-            this.image.sourceY,
-            this.spriteWidth,
-            this.spriteHeight,
-            this.posX,
-            this.posY,
-            this.boxSizeX,
-            this.boxSizeY
-        )
+        if (this.movementProperty.centered) {
+            this.ctx.drawImage(
+                this.image,
+                this.image.sourceX,
+                this.image.sourceY,
+                this.spriteWidth,
+                this.spriteHeight,
+                this.gameWidth / 2,
+                this.posY,
+                this.boxSizeX,
+                this.boxSizeY
+            )
+        } else {
+            this.ctx.drawImage(
+                this.image,
+                this.image.sourceX,
+                this.image.sourceY,
+                this.spriteWidth,
+                this.spriteHeight,
+                this.posX,
+                this.posY,
+                this.boxSizeX,
+                this.boxSizeY
+            )
+        }
     }
 
     walk(direction) { //Faltaría añadir derrape
@@ -87,6 +104,18 @@ class Player {
 
     }
 
+    applyPhysics() {
+
+        if (this.posY < 624) {
+            this.posY += this.velY
+            this.velY += this.gravity
+        }
+        else {
+            this.posY0 = 624
+            this.posY = 624
+        }
+    }
+
 
 
 
@@ -101,7 +130,7 @@ class Player {
                 case this.keys.D:
                     this.posX += this.velX
                     this.movementProperty.direction = "right"
-                    console.log(this.movementProperty.direction)
+                    // console.log(this.movementProperty.direction)
                     // this.movementProperty.running = false // For later
                     this.walk(this.movementProperty.direction)
                     break

@@ -33,10 +33,12 @@ class Enemy {
 
         this.velY = 1
         this.velX = velX
-        this.gravity = gravity   
+        this.gravity = gravity 
+        this.falling = undefined
 
     }
 
+    // Esto podría ser un class Gompa extends Enemy ??? 
     init() {
 
         switch (this.enemyClass) {
@@ -112,6 +114,12 @@ class Enemy {
 
     }
 
+    // Esto habrá que revisarlo cuando se mueva la cámara
+    isOutOfCanvas() {
+
+        return this.posX + this.boxSizeX < 0 || this.posX > this.canvasSize.width
+    }
+
 
     draw() {
         this.ctx.drawImage(
@@ -125,5 +133,27 @@ class Enemy {
             this.boxSizeX,
             this.boxSizeY
         )
+    }
+
+    applyPhysics() {
+
+        // if (this.posY < 624) {
+        //     this.posY += this.velY
+        //     this.velY += this.gravity
+        // }
+        // else {
+        //     this.posY0 = 624
+        //     this.posY = 624
+        // }
+
+        if (this.falling) {
+            this.posY += this.velY
+            this.velY += this.gravity
+        }
+        else {
+            this.posY = this.posY0
+            this.velY = 1
+        }
+
     }
 }

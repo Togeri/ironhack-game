@@ -33,10 +33,10 @@ class AnimationObject {
                 } else {
 
                 }
-                console.log("------------------------------")
-                console.log(this.currentMap[this.posY][this.posX])
                 break;
         
+            
+            
             default:
                 break;
         }
