@@ -130,6 +130,7 @@ class Player {
                 case this.keys.D:
                     this.posX += this.velX
                     this.movementProperty.direction = "right"
+                    this.movementProperty.moving = true
                     // console.log(this.movementProperty.direction)
                     // this.movementProperty.running = false // For later
                     this.walk(this.movementProperty.direction)
@@ -139,6 +140,7 @@ class Player {
                 case this.keys.A:
                     this.posX -= this.velX
                     this.movementProperty.direction = "left"
+                    this.movementProperty.moving = true
                     console.log(this.movementProperty.direction)
                     // this.movementProperty.running = false
                     this.walk(this.movementProperty.direction)
@@ -146,6 +148,21 @@ class Player {
             
                 default:
                     break
+            }
+        })
+
+        document.addEventListener("keyup", event => {
+
+            switch (event.keyCode) {
+                
+                case this.keys.RIGHT:
+                case this.keys.D:
+                    this.movementProperty.moving = false
+                    
+                    break;
+            
+                default:
+                    break;
             }
         })
     }

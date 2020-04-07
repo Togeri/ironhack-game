@@ -1,0 +1,68 @@
+
+1 = Sky
+
+00 = Floor (2)
+
+10 = Brick 1 (3)
+
+20 - Brick 2 (4)
+
+30 - Brick Block (5)
+
+240 - Question Box 1  (28)
+
+250 - Question Box 2  (29)
+
+260 - Question Box 3 (30)
+
+270 - Question Box 4 (31)
+
+330 - Tube Up 1 - Top Left (Black Border) (08)
+
+340 - Tube Up 2 - Top Right (Black Border) (18)
+
+331 - Tube Up 3 - Bottom Left (Black Border) (09)
+
+341 - Tube Up 4 - Bottom Right (Black Border) (19)
+
+350 - Tube Right 1 (Black Border)  (10)
+
+360 - Tube Right 2 (Black Border) (11)
+
+370 - Tube Right 3 (Black Border) (12)
+
+351 - Tube Right 4 (Black Border) (13)
+
+361 - Tube Right 5 (Black Border) (14)
+
+371 - Tube Right 6 (Black Border) (15)
+
+410 - Hill 1 (Beginning Left) (16)
+
+420 - Hill 2 (Top) (17)
+
+430 - Hill 3 (Beginning Right) (18)
+
+411 - Hill 4 (Inner Dotted Right) (19)
+
+421 - Hill 5 (Inner Plain) (20)
+
+431 - Hill 6 (Inner Dotted Left) (21)
+
+441 - Grass 1 (Left) (22)
+
+451 - Grass 2 (Middle) (23)
+
+461 - Grass 3 (Right) (24)
+
+850 - Cloud 1 (Top Left) (32)
+
+860 - Cloud 2 (Top Middle) (33)
+
+870 - Cloud 3 (Top Right) (34)
+
+851 - Cloud 4 (Bot Left) (35)
+
+861 - Cloud 5 (Bot Middle) (36)
+
+871 - Cloud 6 (Bot Right) (37)

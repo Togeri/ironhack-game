@@ -43,7 +43,7 @@ class Enemy {
 
         switch (this.enemyClass) {
             case "Goompa":
-                this.velX = 1
+                this.velX = 0.1
                 this.spriteWidth = 16
                 this.spriteHeight = 16
                 this.boxSizeX = this.spriteWidth * this.scale
