@@ -19,8 +19,11 @@ class Tile {
         
         this.mapArray = mapArray
 
-        this.posX = posX
-        this.posY = posY
+        this.posX = posX //Referred to the Array
+        this.posY = posY // Referred to the Array
+
+        this.posXMap = this.posX * this.boxSizeX // Referred to the Actual Position 
+        this.posYMap = this.posY * this.boxSizeY // Referred to the Actual Position
 
         this.tileCode = this.mapArray[this.posY][this.posX]
 
@@ -46,7 +49,12 @@ class Tile {
             this.player.movementProperty.centered && 
             !this.player.movementProperty.running &&
             this.player.movementProperty.direction === "right" ) {
-            this.posX -= 0.075
+            this.posX -= this.player.velX
+            console.log("BEFORE")
+            console.log(this.posXMap)
+            this.posXMap = this.posX * this.boxSizeX
+            console.log("AFTER")
+            console.log(this.posXMap)
         }
     }
 

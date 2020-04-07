@@ -47,6 +47,7 @@ class Map {
         this.posYmap = 0
 
         this.builtMap = []
+        this.obstaclesMap = []
 
 
 
@@ -67,6 +68,7 @@ class Map {
                 
                 this.builtMap.push(new Tile(this.ctx, this.scale, this.canvasSize, this.image, this.tileSize, this.boxSizeX, this.boxSizeY, this.mapArray, posX, posY, this.player, index))
                 this.animatedTiles.includes(this.builtMap[index].tileCode) ? this.createAnimationObjects(this.builtMap[index]) : null
+                this.obstacleTiles.includes(this.builtMap[index].tileCode) ? this.obstaclesMap.push(this.builtMap[index]) : null
                 index++
                 
             }
@@ -83,10 +85,7 @@ class Map {
        
         this.animationObjects.forEach(tileObject => tileObject.animateFrame())
 
-        this.builtMap.forEach(tileObject => {
-            tileObject.build()
-            tileObject.updateTilePosition() // Provisional
-        })
+        this.builtMap.forEach(tileObject => tileObject.build())
 
         
     }

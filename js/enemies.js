@@ -43,7 +43,7 @@ class Enemy {
 
         switch (this.enemyClass) {
             case "Goompa":
-                this.velX = 0.1
+                this.velX = 1
                 this.spriteWidth = 16
                 this.spriteHeight = 16
                 this.boxSizeX = this.spriteWidth * this.scale
@@ -146,12 +146,12 @@ class Enemy {
         //     this.posY = 624
         // }
 
-        if (this.falling) {
+        if (this.posY < 624) {
             this.posY += this.velY
             this.velY += this.gravity
         }
         else {
-            this.posY = this.posY0
+            this.posY = 624
             this.velY = 1
         }
 

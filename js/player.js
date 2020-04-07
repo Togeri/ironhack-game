@@ -80,6 +80,7 @@ class Player {
         }
     }
 
+    //Animacion
     walk(direction) { //Faltaría añadir derrape
         //El error tiene que estar aqui
         
@@ -122,49 +123,49 @@ class Player {
     setListeners() {
 
         //Mario Moving Listener
-        document.addEventListener("keydown", event => {
+        // document.addEventListener("keydown", event => {
 
-            switch (event.keyCode) {
+        //     switch (event.keyCode) {
 
-                case this.keys.RIGHT:
-                case this.keys.D:
-                    this.posX += this.velX
-                    this.movementProperty.direction = "right"
-                    this.movementProperty.moving = true
-                    // console.log(this.movementProperty.direction)
-                    // this.movementProperty.running = false // For later
-                    this.walk(this.movementProperty.direction)
-                    break
+        //         case this.keys.RIGHT:
+        //         case this.keys.D:
+        //             this.posX += this.velX
+        //             this.movementProperty.direction = "right"
+        //             this.movementProperty.moving = true
+        //             // console.log(this.movementProperty.direction)
+        //             // this.movementProperty.running = false // For later
+        //             this.walk(this.movementProperty.direction)
+        //             break
                 
-                case this.keys.LEFT:
-                case this.keys.A:
-                    this.posX -= this.velX
-                    this.movementProperty.direction = "left"
-                    this.movementProperty.moving = true
-                    console.log(this.movementProperty.direction)
-                    // this.movementProperty.running = false
-                    this.walk(this.movementProperty.direction)
-                    break
+        //         case this.keys.LEFT:
+        //         case this.keys.A:
+        //             this.posX -= this.velX
+        //             this.movementProperty.direction = "left"
+        //             this.movementProperty.moving = true
+        //             console.log(this.movementProperty.direction)
+        //             // this.movementProperty.running = false
+        //             this.walk(this.movementProperty.direction)
+        //             break
             
-                default:
-                    break
-            }
-        })
+        //         default:
+        //             break
+        //     }
+        // })
 
-        document.addEventListener("keyup", event => {
+        // document.addEventListener("keyup", event => {
 
-            switch (event.keyCode) {
+        //     switch (event.keyCode) {
                 
-                case this.keys.RIGHT:
-                case this.keys.D:
-                    this.movementProperty.moving = false
+        //         case this.keys.RIGHT:
+        //         case this.keys.D:
+        //             this.movementProperty.moving = false
                     
-                    break;
+        //             break;
             
-                default:
-                    break;
-            }
-        })
+        //         default:
+        //             break;
+        //     }
+        // })
     }
 
     //     // Mario Still Listener

@@ -13,7 +13,6 @@ class AnimationObject {
         this.tileSize = tileSize
 
         this.referencedTile = referencedTile
-        console.log(referencedTile)
 
         this.tileIndex = 0
         this.tileModule = undefined
@@ -26,7 +25,7 @@ class AnimationObject {
     animateFrame() {
 
         switch (this.tileType) {
-            
+
             case "Question Box":
                 this.tileModule = 3
 
@@ -35,10 +34,11 @@ class AnimationObject {
                     this.tileIndex += 0.086
 
                     if (this.tileIndex < 3) {
-                        console.log("FORWARD!")
+
                         this.currentMap[this.posY][this.posX] = (parseInt(this.tileCode) + (Math.floor((this.tileIndex % this.tileModule)) * 10)).toString()
                         this.referencedTile.tileCode = this.currentMap[this.posY][this.posX]
                         this.referencedTile.updateTileCode()
+
                     } else {
                         this.animationMode = "backwards"
                     }
@@ -48,10 +48,11 @@ class AnimationObject {
                     this.tileIndex -= 0.086
 
                     if (this.tileIndex > 0) {
-                        console.log("backwards!")
+
                         this.currentMap[this.posY][this.posX] = (parseInt(this.tileCode) + (Math.floor((this.tileIndex % this.tileModule)) * 10)).toString()
                         this.referencedTile.tileCode = this.currentMap[this.posY][this.posX]
                         this.referencedTile.updateTileCode()
+
                     } else {
                         this.animationMode = "forward"
                     }
