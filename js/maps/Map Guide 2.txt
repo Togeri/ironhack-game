@@ -17,6 +17,14 @@
 
 270 - Question Box 4 (31)
 
+241 - Big Coin 1  (28)
+
+251 - Big Coin 2  (29)
+
+261 - Big Coin 3 (30)
+
+271 - Big Coin 4 (31)
+
 330 - Tube Up 1 - Top Left (Black Border) (08)
 
 340 - Tube Up 2 - Top Right (Black Border) (18)

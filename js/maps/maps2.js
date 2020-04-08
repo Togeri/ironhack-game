@@ -33,8 +33,8 @@ class Map {
         this.obstacleTiles = ["00", "10", "20", "30", "240", "250", "260", "270", "330", "340", "331", "341", "350", "360", "370", "351", "361", "371", ]
         // Tiles that need individual animations
         this.animatedTiles = ["240", "250", "260"]
-
-        this.availableObstacles = []
+        // Tiles that Mario can Collect
+        this.itemTiles = ["241", "251", "261", ]
 
         // Animation Class made for Objects
         this.animationObjects = []
@@ -44,48 +44,45 @@ class Map {
         this.mapDrawIndexYStart = 0
         this.mapDrawIndexYEnd = Math.floor(this.canvasSize.height / this.boxSizeY)
 
-
         this.posXmap = 0
         this.posYmap = 0
 
         this.builtMap = []
         this.obstaclesMap = []
-
-
-
+        this.itemsMap = []
 
     }
 
     init() {
+
         this.mapIdentifier = `map-${this.world}-${this.level}`
         this.image = new Image()
         this.image.src = `img/tileset2.png`
         this.mapArray = map_1_1
-        // this.createAnimationObjects()
         let index = 0;
 
         for (let posY = 0; posY < this.mapArray.length; posY++) {
-            
             for (let posX = 0; posX < this.mapArray[posY].length; posX++) {
                 
                 this.builtMap.push(new Tile(this.ctx, this.scale, this.canvasSize, this.image, this.tileSize, this.boxSizeX, this.boxSizeY, this.mapArray, posX, posY, this.player, index))
                 this.animatedTiles.includes(this.builtMap[index].tileCode) ? this.createAnimationObjects(this.builtMap[index]) : null
                 this.obstacleTiles.includes(this.builtMap[index].tileCode) ? this.obstaclesMap.push(this.builtMap[index]) : null
+
+                if (this.itemTiles.includes(this.builtMap[index].tileCode)) {
+                    this.createAnimationObjects(this.builtMap[index])
+                    this.itemsMap.push(this.builtMap[index])
+                }
                 index++
-               
             }        
         }    
     }
 
-
     draw() {
        
         this.animationObjects.forEach(tileObject => tileObject.animateFrame())
-        this.builtMap.forEach(tileObject => tileObject.build())
-       
+        this.builtMap.forEach(tileObject => tileObject.build())     
     }
 
-    
     // Esto se puede refactorizar
     createAnimationObjects(referencedTile) {
 
@@ -93,16 +90,12 @@ class Map {
             case "240":
                 this.animationObjects.push(new AnimationObject(this, map_1_1, "Question Box", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile))
                 break;
+            
+            case "241":
+                this.animationObjects.push(new AnimationObject(this, map_1_1, "Big Coin", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile))
         
             default:
                 break;
         }
     }
-
-    // updateAvailableObstacles(agent) {
-
-    //     this.availableObstacles = (this.obstaclesMap.filter(obstacle => obstacle.posYMap > agent.posY + agent.boxSizeY))
-    //     // console.log("AVAILABLE PLATFORMS: ", this.availableObstacles)
-    // }
-
 }

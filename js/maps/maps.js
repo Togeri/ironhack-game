@@ -1,6 +1,3 @@
-// import { map_1 } from "./map-1-1.js"; //Me da error CORS
-
-
 class Map {
     
     constructor(ctx, scale, canvasSize, world, level, player) {
@@ -40,13 +37,8 @@ class Map {
         this.mapDrawIndexYStart = 0
         this.mapDrawIndexYEnd = Math.floor(this.canvasSize.height / this.boxSizeY)
 
-
         this.posXmap = 0
         this.posYmap = 0
-        
-        
-
-
     }
     
     init() {
@@ -57,21 +49,14 @@ class Map {
         this.createAnimationObjects()
     }
 
-
-    
-    
     draw() {
 
         this.posXmap = 0
         this.posYmap = 1
         
         switch (this.mapIdentifier) {
-            
-            
-            case "map-1-1":
-                // for (let posY = this.mapDrawIndexYStart; posY < this.mapDrawIndexYEnd; posY++) {
-                //     for (let posX = this.mapDrawIndexXStart; posX < this.mapDrawIndexXEnd; posX++) {
-                
+
+            case "map-1-1":               
 
                 for (let posY = 0; posY < map_1_1.length; posY++) {
                     for (let posX = 0; posX < map_1_1[posY].length; posX++) {
@@ -85,11 +70,9 @@ class Map {
                                 break;
                             case 3:
                                 this.build("Brick 1", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
-                                
                                 break;
                             case 4:
                                 this.build("Brick 2", posX, posY, this.mapDrawIndexXStart, this.mapDrawIndexYStart)
-                                
                                 break;
                             
                             case 6:

@@ -1,6 +1,4 @@
-// Esto debería estar separado por enemigos. Goompa debería tener un archivo, Turtle otro, y así
-
-
+// Esto debería estar separado por enemigos. Goompa debería tener un archivo que fuera class Goompa extends Enemy, Turtle otro, y así
 class Enemy {
 
     constructor(ctx, enemyClass, canvasSize, gravity, scale, posX, posY, posY0, velX) {
@@ -38,7 +36,6 @@ class Enemy {
 
     }
 
-    // Esto podría ser un class Gompa extends Enemy ??? 
     init() {
 
         switch (this.enemyClass) {
@@ -69,7 +66,6 @@ class Enemy {
             default:
                 break;
         }
-
     }
 
     walk() {
@@ -120,7 +116,6 @@ class Enemy {
         return this.posX + this.boxSizeX < 0 || this.posX > this.canvasSize.width
     }
 
-
     draw() {
         this.ctx.drawImage(
             this.image,
@@ -134,28 +129,4 @@ class Enemy {
             this.boxSizeY
         )
     }
-
-    // applyPhysics() {
-
-    //     // if (this.posY < 624) {
-    //     //     this.posY += this.velY
-    //     //     this.velY += this.gravity
-    //     // }
-    //     // else {
-    //     //     this.posY0 = 624
-    //     //     this.posY = 624
-    //     // }
-
-    //     if (this.posY < 624) {
-    //         this.falling = true
-    //         this.posY += this.velY
-    //         this.velY += this.gravity
-    //     }
-    //     else {
-    //         this.falling = false
-    //         this.posY = 624
-    //         this.velY = 1
-    //     }
-
-    // }
 }

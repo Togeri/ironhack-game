@@ -13,8 +13,6 @@ class Player {
         this.boxSizeX = this.spriteWidth * this.scale
         this.boxSizeY = this.spriteHeight * this.scale
 
-
-
         this.image = new Image()
         this.image.src = "./img/mario-full.png"
 
@@ -23,12 +21,9 @@ class Player {
         this.image.sourceX = 527
         this.image.sourceY = 34
 
-        // this.posX = this.spriteWidth * 3 * this.scale - this.spriteWidth
-        // this.posY = this.gameHeight - 168
         this.posX = 600
         this.posY = 100
         this.posY0 = 700
-        // this.posY0 = 624
 
         this.keys = keys
 
@@ -49,13 +44,11 @@ class Player {
 
         this.fireBalls = []
 
-
-        // this.setListeners()
-
+        this.gameOverAnimationStarted = false
     }
 
     draw() {
-        // Si no pongo el onload la imagen no me carga (linea 59 de game.js)
+
         if (this.movementProperty.centered) {
             this.ctx.drawImage(
                 this.image,
@@ -84,32 +77,50 @@ class Player {
     }
 
     //Animacion
-    walk(direction) { //Faltaría añadir derrape
-        //El error tiene que estar aqui
+    walk() { 
+        //Falta añadir estado Mario Grande
+        if (!this.movementProperty.jumping) {
+            switch (this.movementProperty.direction) {
 
-        switch (direction) {
+                case "right":
+                    this.movementProperty.moving = true
+                    this.image.framesIndex++
+                    this.image.framesIndex == 4 ? this.image.framesIndex = 0 : null
+                    this.image.sourceX = 527 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
+                    break
+
+                case "left":
+                    this.movementProperty.moving = true
+                    this.image.framesIndex--
+                    this.image.framesIndex == -4 ? this.image.framesIndex = 0 : null
+                    this.image.sourceX = 508 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
+                    break
+                
+                default:
+                    break
+            }
+        }
+    }
+
+    jumpAnimation() {
+
+        switch (this.movementProperty.direction) {
             case "right":
-                this.movementProperty.moving = true
-                this.image.framesIndex++
-                this.image.framesIndex == 4 ? this.image.framesIndex = 0 : null
-                this.image.sourceX = 527 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
-
-                break
-
+                this.image.sourceX = 612
+                break;
+        
             case "left":
-                this.movementProperty.moving = true
-                this.image.framesIndex--
-                this.image.framesIndex == -4 ? this.image.framesIndex = 0 : null
-                this.image.sourceX = 508 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
-                break
+                this.image.sourceX = 423
+                break;
             default:
-                break
+                break;
         }
 
     }
 
-
-
-
-
+    gameOverAnimation() {
+        this.image.sourceX = 629
+        this.image.sourceY = 34
+        this.draw()
+    }
 }
