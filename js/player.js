@@ -4,7 +4,7 @@ class Player {
 
         this.ctx = ctx
         this.scale = scale
-        
+
         this.gameWidth = gameW
         this.gameHeight = gameH
 
@@ -23,29 +23,29 @@ class Player {
 
         this.posX = 600
         this.posY = 100
-        this.posY0 = 624
+        this.posY0 = 700
 
         this.keys = keys
 
         this.movementProperty = {
             direction: "right",
             running: false,
-            moving: false, 
+            moving: false, // ??
             jumping: false,
-            centered: false
+            centered: false,
+            jumpCounter: 0
         }
 
         this.velY = 1
         this.velX = 5
         this.gravity = gravity
+        this.falling = false
 
         this.playerState = undefined // Controlling Mario's States
 
         this.fireBalls = []
 
-
-        this.setListeners()
-
+        this.gameOverAnimationStarted = false
     }
 
     draw() {
@@ -78,27 +78,50 @@ class Player {
     }
 
     //Animacion
-    walk(direction) { 
+    walk() { 
+        //Falta añadir estado Mario Grande
+        if (!this.movementProperty.jumping) {
+            switch (this.movementProperty.direction) {
 
-        
-        switch (direction) {
+                case "right":
+                    this.movementProperty.moving = true
+                    this.image.framesIndex += 0.5
+                    this.image.framesIndex == 4 ? this.image.framesIndex = 0 : null
+                    this.image.sourceX = 527 + this.spriteWidth * (Math.floor(this.image.framesIndex) % 4) + this.image.framesIndex
+                    break
 
+                case "left":
+                    this.movementProperty.moving = true
+                    this.image.framesIndex -= 0.5
+                    this.image.framesIndex == -4 ? this.image.framesIndex = 0 : null
+                    this.image.sourceX = 508 + this.spriteWidth * (Math.floor(this.image.framesIndex % 4)) + this.image.framesIndex
+                    break
+                
+                default:
+                    break
+            }
+        }
+    }
+
+    jumpAnimation() {
+
+        switch (this.movementProperty.direction) {
             case "right":
-                this.movementProperty.moving = true
-                this.image.framesIndex++
-                this.image.framesIndex == 4 ? this.image.framesIndex = 0 : null
-                this.image.sourceX = 527 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
-                break
+                this.image.sourceX = 612
+                break;
         
             case "left":
-                this.movementProperty.moving = true
-                this.image.framesIndex--
-                this.image.framesIndex == -4 ? this.image.framesIndex = 0 : null
-                this.image.sourceX = 508 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
-                break
-            
+                this.image.sourceX = 423
+                break;
             default:
-                break
+                break;
         }
+
+    }
+
+    gameOverAnimation() {
+        this.image.sourceX = 629
+        this.image.sourceY = 34
+        this.draw()
     }
 }

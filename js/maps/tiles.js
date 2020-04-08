@@ -36,12 +36,8 @@ class Tile {
             this.tileCodeX = parseInt(this.tileCode.slice(0, 2))
             this.tileCodeY = parseInt(this.tileCode.split('')[2])
         }
-        
-        
 
         this.player = player
-
-        
     }
 
     updateTilePosition() {
@@ -71,8 +67,6 @@ class Tile {
         }
     }
 
-
-
     build() {
         
             this.ctx.fillStyle = "#5c94fc"
@@ -94,12 +88,6 @@ class Tile {
                 this.boxSizeX,
                 this.boxSizeY
             )
-
-        
     }
-
-
-
-
 
 }

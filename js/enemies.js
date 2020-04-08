@@ -1,6 +1,4 @@
-// Esto debería estar separado por enemigos. Goompa debería tener un archivo, Turtle otro, y así
-
-
+// Esto debería estar separado por enemigos. Goompa debería tener un archivo que fuera class Goompa extends Enemy, Turtle otro, y así
 class Enemy {
 
     constructor(ctx, enemyClass, canvasSize, gravity, scale, posX, posY, posY0, velX) {
@@ -18,7 +16,7 @@ class Enemy {
 
         this.spriteWidth = undefined
         this.spriteHeight = undefined
-        this.boxSizeX =  undefined
+        this.boxSizeX = undefined
         this.boxSizeY = undefined
 
         this.image = new Image()
@@ -31,14 +29,12 @@ class Enemy {
         this.posY = posY
         this.posY0 = posY0
 
-        this.velY = 1
+        this.velY = 8
         this.velX = velX
-        this.gravity = gravity 
-        this.falling = undefined
-
+        this.gravity = gravity
+        this.falling = false
     }
 
-    // Esto podría ser un class Gompa extends Enemy ??? 
     init() {
 
         switch (this.enemyClass) {
@@ -52,7 +48,7 @@ class Enemy {
                 this.image.sourceX = 0
                 this.image.sourceY = 16
                 break;
-        
+
             default:
                 break;
         }
@@ -65,17 +61,16 @@ class Enemy {
                 this.enemyState === "alive" ? this.walk() : null
                 // this.receiveDamage() // This method should be called upon Collision
                 break;
-        
+
             default:
                 break;
         }
-        
     }
 
     walk() {
 
         if (this.enemyState === "alive") {
-            
+
             switch (this.enemyClass) {
                 case "Goompa":
                     this.posX -= this.velX
@@ -86,13 +81,12 @@ class Enemy {
 
                 default:
                     break;
-            } 
-        }       
+            }
+        }
 
     }
 
     jump() {
-
 
     }
 
@@ -107,7 +101,7 @@ class Enemy {
                 this.enemyState = "dead"
                 this.image.sourceX = 32
                 break;
-        
+
             default:
                 break;
         }
@@ -117,9 +111,8 @@ class Enemy {
     // Esto habrá que revisarlo cuando se mueva la cámara
     isOutOfCanvas() {
 
-        return this.posX + this.boxSizeX < 0 || this.posX > this.canvasSize.width
+        return this.posX + this.boxSizeX < 0
     }
-
 
     draw() {
         this.ctx.drawImage(
@@ -133,29 +126,5 @@ class Enemy {
             this.boxSizeX,
             this.boxSizeY
         )
-    }
-
-    applyPhysics() {
-
-        // if (this.posY < 624) {
-        //     this.posY += this.velY
-        //     this.velY += this.gravity
-        // }
-        // else {
-        //     this.posY0 = 624
-        //     this.posY = 624
-        // }
-
-        if (this.posY < 624) {
-            this.falling = true
-            this.posY += this.velY
-            this.velY += this.gravity
-        }
-        else {
-            this.falling = false
-            this.posY = 624
-            this.velY = 1
-        }
-
     }
 }
