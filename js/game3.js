@@ -10,11 +10,13 @@ const game = {
 
     lifes: 3,
     score: 0,
+    scorePainting : [],
     scoreImg: undefined,
     coins: 0,
-    time: 300,
+    time: 260,
     gameOver: false,
     gameOverCounter: 0,
+    hurry: false,
 
     scale: 3, // LA ESCALA DEL JUEGO ESTÁ A 3X
 
@@ -62,7 +64,10 @@ const game = {
         gameOverSound: new Audio("./sounds/music/08-you-re-dead.mp3"),
         coinSound: new Audio("./sounds/sfx/coin.wav"),
         // gameOver: ctxAUDIO.createMediaelementSource("./sounds/music/08-you-re-dead.mp3")
-        // overWorldSound: new Audio(),
+        overWorldSound: new Audio("./sounds/music/01-main-theme-overworld.mp3"),
+        hurryoverWorldSound: new Audio("./sounds/music/18-hurry-overworld-.mp3"),
+        jump: new Audio("./sounds/sfx/jump-small.wav"),
+        stomp: new Audio("./sounds/sfx/stomp.wav"),
 
     },
 
@@ -81,6 +86,7 @@ const game = {
         this.scoreImg = new Image()
         this.scoreImg.src = "./img/tileset2.png"
         this.start()
+        this.sounds.overWorldSound.play()
     },
 
     setDimensions() {
@@ -101,14 +107,20 @@ const game = {
         this.map.init()
 
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1100, 100, 624))
-        this.enemies[0].init()
-        this.enemies[0].image.onload = () => this.enemies[0].draw()
+        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 5200, 200, 624))
+        // this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1000, 200, 624))
+        this.enemies.forEach(enemy => enemy.init())
 
         // ---------------Hasta aqui --- Todo son pruebas 
 
         this.interval = setInterval(() => {
-
             this.time === 0 ? this.gameOver = true : null
+            this.time === 100 ? this.hurry = true : null
+
+            if (this.hurry && this.time === 100) {
+                this.sounds.overWorldSound.pause()
+                this.sounds.hurryoverWorldSound.play()
+            }
 
             if (!this.gameOver) {
                 if (this.playerRelativeX >= 1010) {
@@ -120,9 +132,19 @@ const game = {
                     this.enemies.forEach(enemy => {
                         this.applyPhysics(enemy)
                         this.isCollisionEnemy(this.player, enemy) ? this.gameOver = true : null
+                        
+                        let finiteLoopArray = this.enemies.filter(enemy2 => enemy != enemy2) 
+
+                        // Enemies Collision
+                        if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(enemy, element, enemy.posX + 1, enemy.posY)).length != 0 && !enemy.falling ||
+                            this.map.obstaclesMap.filter(element => this.isCollisionObstacle(enemy, element, enemy.posX - 1, enemy.posY)).length != 0 && !enemy.falling ||
+                            finiteLoopArray.filter(element => this.isCollisionEnemy(enemy, element)).length != 0 && !enemy.falling) {
+                            enemy.velX *= -1 
+                        }
                     })
                     this.applyPhysics(this.player)
                     this.move()
+                    this.checkStomp()
                     this.map.itemsMap.forEach((item, index) => {
 
                         if (this.isCollisionObstacle(this.player, item, this.player.posX, this.player.posY)) {
@@ -155,6 +177,8 @@ const game = {
                 }
 
             } else {
+                this.sounds.overWorldSound.pause()
+                this.sounds.hurryoverWorldSound.pause()
                 this.sounds.gameOverSound.play()
                 if (this.gameOverCounter === 200) {
                     clearInterval(this.interval)
@@ -228,7 +252,7 @@ const game = {
             element.posY = this.map.obstaclesMap.filter(obstacle => this.isCollisionObstacle(element, obstacle, element.posX, element.posY + 1))[0].posYMap - 48
             element.posY0 = element.posY
             element.velY = 8
-            element.failling = false
+            element.falling = false
 
             if (element == this.player) {
                 element.movementProperty.jumping = false
@@ -301,6 +325,7 @@ const game = {
                 this.map.itemsMap.forEach(item => {
                     item.posXMap = item.posX * item.boxSizeX
                 })
+                this.scorePainting.forEach(score => score.posX -= (this.velX) * 2.15)
                 this.playerRelativeX++
             }
         }
@@ -313,7 +338,8 @@ const game = {
             this.player.movementProperty.centered = false
             this.player.walk()
 
-            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 10, this.player.posY)).length === 0) {
+            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 10, this.player.posY)).length === 0 &&
+            this.player.posX > 0) {
 
                 this.player.posX -= this.velX * 1.5
                 this.playerRelativeX--
@@ -341,6 +367,7 @@ const game = {
             this.player.movementProperty.jumping = true
         }
         this.player.jumpAnimation()
+        this.sounds.jump.play()
     },
 
     longerJump() {
@@ -355,6 +382,30 @@ const game = {
         return this.map.obstaclesMap.filter(obstacle => this.isCollisionObstacle(this.player, obstacle, this.player.posX, this.player.posY - 10)).length != 0
     },
 
+    
+
+    checkStomp() {
+        // Stomping Enemies
+        if (this.enemies.filter(enemy => this.isCollisionEnemy(this.player, enemy, this.player.posX, this.player.posY + 1)).length != 0 &&
+            this.player.falling === true && !this.gameOver) {
+            console.log("PLAYER IS FALLING!", this.player.falling)
+            currentEnemies = this.enemies.filter(enemy => this.isCollisionEnemy(this.player, enemy, this.player.posX, this.player.posY + 1))
+            let erasedEnemyArray
+            currentEnemies.forEach(enemy => {
+                enemy.receiveDamage()
+                this.addScore(100, enemy.posX, enemy.posY)
+                this.score += 100
+                erasedEnemyArray = this.enemies.filter(enemy2 => enemy != enemy2) 
+            })
+            this.player.posY -= 20
+            this.player.velY -= 20
+            this.sounds.stomp.play()
+            setTimeout(() => {
+                this.enemies = erasedEnemyArray
+            }, 500)
+        }
+    },
+
 
     setListeners() {
 
@@ -364,19 +415,20 @@ const game = {
 
                 case this.keys.RIGHT:
                 case this.keys.D:
-
                     this.keyState.keyRight = true
                     break;
 
                 case this.keys.LEFT:
                 case this.keys.A:
-
                     this.keyState.keyLeft = true
                     break
 
                 case this.keys.UP:
                 case this.keys.W:
-
+                    this.keyState.keyUp = true
+                    break
+                
+                case this.keys.O:
                     this.keyState.keyUp = true
                     break
 
@@ -390,19 +442,20 @@ const game = {
             switch (event.keyCode) {
                 case this.keys.RIGHT:
                 case this.keys.D:
-
                     this.keyState.keyRight = false
                     break;
 
                 case this.keys.LEFT:
                 case this.keys.A:
-
                     this.keyState.keyLeft = false
                     break
 
                 case this.keys.UP:
                 case this.keys.W:
-
+                    this.keyState.keyUp = false
+                    break
+                
+                case this.keys.O:
                     this.keyState.keyUp = false
                     break
 
@@ -410,6 +463,19 @@ const game = {
                     break;
             }
         })
+    },
+
+    addScore(points, posX, posY) {
+
+        let score = {
+            points: points,
+            posX: posX,
+            posY: posY - this.scorePainting.length * 20,
+            timer: 30,
+        }
+
+        this.scorePainting.push(score)
+
     },
 
     drawScore() {
@@ -443,6 +509,14 @@ const game = {
         // Mario time
         this.ctx.fillText("TIME", 1200, 50)
         this.ctx.fillText(`${this.time}`, 1220, 80)
+
+        // Stomp & Coins Score
+        this.scorePainting.forEach(score => { 
+            this.ctx.font = "15px 'Press Start 2P'"
+            this.ctx.fillText(score.points, score.posX, score.posY)
+            score.timer--
+        })
+        this.scorePainting = this.scorePainting.filter(score => score.timer > 0)
 
     },
 

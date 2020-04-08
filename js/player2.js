@@ -39,6 +39,7 @@ class Player {
         this.velY = 1
         this.velX = 5
         this.gravity = gravity
+        this.falling = false
 
         this.playerState = undefined // Controlling Mario's States
 
@@ -84,16 +85,16 @@ class Player {
 
                 case "right":
                     this.movementProperty.moving = true
-                    this.image.framesIndex++
+                    this.image.framesIndex += 0.5
                     this.image.framesIndex == 4 ? this.image.framesIndex = 0 : null
-                    this.image.sourceX = 527 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
+                    this.image.sourceX = 527 + this.spriteWidth * (Math.floor(this.image.framesIndex) % 4) + this.image.framesIndex
                     break
 
                 case "left":
                     this.movementProperty.moving = true
-                    this.image.framesIndex--
+                    this.image.framesIndex -= 0.5
                     this.image.framesIndex == -4 ? this.image.framesIndex = 0 : null
-                    this.image.sourceX = 508 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
+                    this.image.sourceX = 508 + this.spriteWidth * (Math.floor(this.image.framesIndex % 4)) + this.image.framesIndex
                     break
                 
                 default:

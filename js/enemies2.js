@@ -113,7 +113,7 @@ class Enemy {
     // Esto habrá que revisarlo cuando se mueva la cámara
     isOutOfCanvas() {
 
-        return this.posX + this.boxSizeX < 0 || this.posX > this.canvasSize.width
+        return this.posX + this.boxSizeX < 0
     }
 
     draw() {
