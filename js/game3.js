@@ -91,17 +91,17 @@ const game = {
 
 
             this.enemies.forEach(enemy => {
-                
+
                 if (this.isCollisionEnemy(this.player, enemy)) {
-                    
+
                     this.player.image.sourceX = 629
                     this.player.image.sourceY = 34
                     console.log("damn!")
-                    
+
                 }
             })
 
-            
+
 
 
         }, 1000 / this.FPS)
@@ -159,11 +159,11 @@ const game = {
 
     },
 
-    collisionBot(element1, element2, typeOfElement2) { 
+    collisionBot(element1, element2, typeOfElement2) {
         if (condition) {
-            
+
         } else {
-            
+
         }
     },
 
@@ -172,7 +172,7 @@ const game = {
     //     if (element1.posY + element1.boxSizeY >= element2.posYMap) {
 
     //        element1.posY0 = element2.posYMap
-            
+
     //     }
     //     // if (element2 instanceof Obstacle) {
     //     //     return element1.posY + element1.boxSizeY >= element2.posYMap
@@ -184,32 +184,32 @@ const game = {
 
     applyPhysics(element) {
 
-        if (isCollisionObstacle(element, )) {
-            
+        if (isCollisionObstacle(element)) {
+
         }
 
     },
 
 
     // Esto se tiene que refactorizar a move(direction)
-    moveRight() { 
+    moveRight() {
 
         if (Math.floor(this.player.posX / this.player.boxSizeX) <= 14) {
             this.player.movementProperty.centered = false
             this.player.walk("right")
             // Obstacle Checker
-        
-            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX+1)).length === 0) {
-                
+
+            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 1)).length === 0) {
+
                 this.player.posX += this.velX * 1.5
             }
         }
         else {
             this.player.movementProperty.centered = true
             this.player.walk("right")
-                        
-            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX+1)).length === 0) {
-                
+
+            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 1)).length === 0) {
+
                 this.enemies.forEach(enemy => enemy.posX -= (this.velX * 2) + this.velX * 0.1)
                 this.map.builtMap.forEach(tile => tile.posX -= (this.velX) * .04)
                 this.map.obstaclesMap.forEach(obstacle => obstacle.posXMap = obstacle.posX * obstacle.boxSizeX)
@@ -220,35 +220,35 @@ const game = {
     moveLeft() {
 
         if (Math.floor(this.player.posX / this.player.boxSizeX) <= 14) {
-            
+
             this.player.movementProperty.centered = false
             this.player.walk("left")
-            
+
             if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 5)).length === 0) {
-                
+
                 this.player.posX -= this.velX * 1.5
             }
         }
         else {
             this.player.movementProperty.centered = true
             this.player.walk("left")
-            
-            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 5)).length === 0) { 
-                
+
+            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 5)).length === 0) {
+
                 this.player.posX -= this.velX
             }
         }
     },
 
     jump() {
-        
-            this.player.movementProperty.jumping = true
-            this.player.posY -= this.player.jumpForce
-        
-        
-            this.player.posY -= (- this.player.jumpForce) + this.gravity
-            // this.player.vely -= 1
-        
+
+        this.player.movementProperty.jumping = true
+        this.player.posY -= this.player.jumpForce
+
+
+        this.player.posY -= (- this.player.jumpForce) + this.gravity
+        // this.player.vely -= 1
+
     },
 
 
@@ -263,19 +263,19 @@ const game = {
 
                     this.moveRight() //Se puede refactorizar a move("direction")
                     break;
-                
+
                 case this.keys.LEFT:
                 case this.keys.A:
 
                     this.moveLeft()
                     break
-                
+
                 case this.keys.UP:
                 case this.keys.W:
 
                     this.jump()
-                    // this.player.velY -= 2
-            
+                // this.player.velY -= 2
+
                 default:
                     break;
             }
@@ -300,7 +300,7 @@ const game = {
             }
         })
 
-       
+
     }
 
 }

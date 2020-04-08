@@ -4,7 +4,7 @@ class Player {
 
         this.ctx = ctx
         this.scale = scale
-        
+
         this.gameWidth = gameW
         this.gameHeight = gameH
 
@@ -85,7 +85,7 @@ class Player {
     //Animacion
     walk(direction) { //Faltaría añadir derrape
         //El error tiene que estar aqui
-        
+
         switch (direction) {
             case "right":
                 this.movementProperty.moving = true
@@ -94,7 +94,7 @@ class Player {
                 this.image.sourceX = 527 + this.spriteWidth * (this.image.framesIndex % 4) + this.image.framesIndex
 
                 break
-        
+
             case "left":
                 this.movementProperty.moving = true
                 this.image.framesIndex--
@@ -111,8 +111,8 @@ class Player {
 
         if (this.posY < this.posY0) {
             this.falling = true
-            this.posY += this.velY 
-            this.velY += this.gravity 
+            this.posY += this.velY
+            this.velY += this.gravity
         }
         else {
             this.falling = false
@@ -143,7 +143,7 @@ class Player {
         //             // this.movementProperty.running = false // For later
         //             this.walk(this.movementProperty.direction)
         //             break
-                
+
         //         case this.keys.LEFT:
         //         case this.keys.A:
         //             this.posX -= this.velX
@@ -153,7 +153,7 @@ class Player {
         //             // this.movementProperty.running = false
         //             this.walk(this.movementProperty.direction)
         //             break
-            
+
         //         default:
         //             break
         //     }
@@ -162,13 +162,13 @@ class Player {
         // document.addEventListener("keyup", event => {
 
         //     switch (event.keyCode) {
-                
+
         //         case this.keys.RIGHT:
         //         case this.keys.D:
         //             this.movementProperty.moving = false
-                    
+
         //             break;
-            
+
         //         default:
         //             break;
         //     }
@@ -181,12 +181,12 @@ class Player {
     //         switch (event.keyCode) {
     //             case this.keys.D:
     //             case this.keys.RIGHT:
-                    
+
     //                 // if (this.movementProperty.moving && this.movementProperty.direction === "right") {
     //                 //     this.movementProperty.moving = false
     //                 //     this.image.sourceX = 527
     //                 // }
-                    
+
     //                 if (
     //                     this.movementProperty.direction === "right" &&
     //                     !this.movementProperty.running &&
@@ -218,7 +218,7 @@ class Player {
     //                 ) {
     //                     this.image.sourceX = 508
     //                 }
-                    
+
     //                 break
 
     //             default:
@@ -232,7 +232,7 @@ class Player {
 
 
     // marioStill() {
-        
+
     //     if (
     //         this.movementProperty.direction === "right" &&
     //         !this.movementProperty.running &&
@@ -241,7 +241,7 @@ class Player {
     //     ) {
     //         this.movementProperty.moving = false
     //         this.image.sourceX = 527
-            
+
     //     } else if (
     //         this.movementProperty.direction === "left" &&
     //         !this.movementProperty.running &&

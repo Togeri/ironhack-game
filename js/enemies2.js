@@ -18,7 +18,7 @@ class Enemy {
 
         this.spriteWidth = undefined
         this.spriteHeight = undefined
-        this.boxSizeX =  undefined
+        this.boxSizeX = undefined
         this.boxSizeY = undefined
 
         this.image = new Image()
@@ -33,7 +33,7 @@ class Enemy {
 
         this.velY = 1
         this.velX = velX
-        this.gravity = gravity 
+        this.gravity = gravity
         this.falling = undefined
 
     }
@@ -52,7 +52,7 @@ class Enemy {
                 this.image.sourceX = 0
                 this.image.sourceY = 16
                 break;
-        
+
             default:
                 break;
         }
@@ -65,17 +65,17 @@ class Enemy {
                 this.enemyState === "alive" ? this.walk() : null
                 // this.receiveDamage() // This method should be called upon Collision
                 break;
-        
+
             default:
                 break;
         }
-        
+
     }
 
     walk() {
 
         if (this.enemyState === "alive") {
-            
+
             switch (this.enemyClass) {
                 case "Goompa":
                     this.posX -= this.velX
@@ -86,8 +86,8 @@ class Enemy {
 
                 default:
                     break;
-            } 
-        }       
+            }
+        }
 
     }
 
@@ -107,7 +107,7 @@ class Enemy {
                 this.enemyState = "dead"
                 this.image.sourceX = 32
                 break;
-        
+
             default:
                 break;
         }
