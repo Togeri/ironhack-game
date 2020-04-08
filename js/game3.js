@@ -24,7 +24,6 @@ const game = {
 
 
     velX: 5,
-    // gravity: 1.08, //Standard Gravity: Fishes and other flying enemies would have different gravity
     gravity: 0.6, //Standard Gravity: Fishes and other flying enemies would have different gravity
 
     keys: {
@@ -40,6 +39,12 @@ const game = {
         O: 79, // "A" in NES
         V: 86, // "Start" in NES
         N: 78 // "Select" in NES
+    },
+
+    keyState: {
+        keyLeft: false,
+        keyRight: false,
+        keyUp: false,
     },
 
     interval: undefined,
@@ -68,59 +73,53 @@ const game = {
 
     start() {
 
-        // Todo esto son pruebas que luego serán sustituidas por un "mapLoad() method, sobre todo la parte de enemies"
+        // ---------------Todo esto son pruebas que luego serán sustituidas por un "mapLoad() method, sobre todo la parte de enemies"
         this.player = new Player(this.ctx, this.canvasSize.width, this.canvasSize.height, this.keys, this.gravity, this.scale)
         this.player.image.onload = () => this.player.draw()
 
         this.map = new Map(this.ctx, this.scale, this.canvasSize, 1, 1, this.player)
         this.map.init()
 
-
-
-
-        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1100, 100, 200))
+        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1100, 100, 624))
         this.enemies[0].init()
         this.enemies[0].image.onload = () => this.enemies[0].draw()
 
-
+        // ---------------Hasta aqui --- Todo son pruebas 
 
         this.interval = setInterval(() => {
 
             this.clear()
             this.drawAll()
-
+            
 
             this.enemies.forEach(enemy => {
 
-                if (this.isCollisionEnemy(this.player, enemy)) {
+                // this.map.updateAvailableObstacles(enemy)
+                this.applyPhysics(enemy)
 
+                //Esto tiene que ir dentro de un condicional para chekear las collisiones en top y diferenciarlas del resto
+                if (this.isCollisionEnemy(this.player, enemy)) {
                     this.player.image.sourceX = 629
                     this.player.image.sourceY = 34
-                    console.log("damn!")
-
                 }
             })
-
-
-
+            // this.map.updateAvailableObstacles(this.player)
+            this.applyPhysics(this.player)
+            this.move()
 
         }, 1000 / this.FPS)
-
     },
 
     drawAll() {
         this.map.draw()
         this.enemies.forEach((enemy, index) => {
-            enemy.applyPhysics()
             enemy.draw()
             enemy.actions()
             enemy.isOutOfCanvas() ? this.enemies.splice(index, 1) : null
 
         });
-        this.player.applyPhysics()
-        this.player.draw()
 
-        // this.map.obstaclesMap.forEach(obstacle => (this.isFalling(this.player, obstacle)))
+        this.player.draw()
 
     },
 
@@ -132,13 +131,11 @@ const game = {
 
     isCollisionEnemy(element1, element2) {
 
-
-
         return (
-            element1.posY + element1.boxSizeY >= element2.posY && // TOP
-            element1.posX <= element2.posX + element2.boxSizeX && // RIGHT
-            element1.posY <= element2.posY + element2.boxSizeY && // BOT
-            element1.posX + element1.boxSizeX >= element2.posX // LEFT
+            element1.posY + element1.boxSizeY > element2.posY && // TOP
+            element1.posX < element2.posX + element2.boxSizeX && // RIGHT
+            element1.posY < element2.posY + element2.boxSizeY && // BOT
+            element1.posX + element1.boxSizeX > element2.posX // LEFT
         )
 
 
@@ -146,50 +143,55 @@ const game = {
 
 
     // Needs refactoring: La importancia de nombrar bien las variables
-    isCollisionObstacle(element1, element2, posX) {
-
+    isCollisionObstacle(element1, element2, posX, posY) {
 
         return (
-            element1.posY + element1.boxSizeY >= element2.posYMap && // TOP
-            posX <= element2.posXMap + element2.boxSizeX && // RIGHT
-            element1.posY <= element2.posYMap + element2.boxSizeY && // BOT
-            posX + element1.boxSizeX >= element2.posXMap // LEFT
+            posY + element1.boxSizeY > element2.posYMap && // TOP
+            posX < element2.posXMap + element2.boxSizeX && // RIGHT
+            posY < element2.posYMap + element2.boxSizeY && // BOT
+            posX + element1.boxSizeX > element2.posXMap // LEFT
         )
 
-
     },
-
-    collisionBot(element1, element2, typeOfElement2) {
-        if (condition) {
-
-        } else {
-
-        }
-    },
-
-    // isFalling(element1, element2) {
-
-    //     if (element1.posY + element1.boxSizeY >= element2.posYMap) {
-
-    //        element1.posY0 = element2.posYMap
-
-    //     }
-    //     // if (element2 instanceof Obstacle) {
-    //     //     return element1.posY + element1.boxSizeY >= element2.posYMap
-    //     // } else {
-    //     //     return element1.posY + element1.boxSizeY >= element2.posY
-    //     // }
-
-    // },
-
     applyPhysics(element) {
 
-        if (isCollisionObstacle(element)) {
+        console.log(this.map.obstaclesMap.filter(obstacle => this.isCollisionObstacle(element, obstacle, element.posX, element.posY)))
 
+        // this.map.availableObstacles = (this.map.obstaclesMap.filter(obstacle => obstacle.posYMap >= this.player.posY + this.player.boxSizeY))
+
+        // console.log("AVAILABLE PLATFORMS: ", availablePlatforms)
+
+
+        if (this.map.obstaclesMap.filter(obstacle => this.isCollisionObstacle(element, obstacle, element.posX, element.posY + 1)).length != 0) {
+            
+            element.posY = this.map.obstaclesMap.filter(obstacle => this.isCollisionObstacle(element, obstacle, element.posX, element.posY + 1))[0].posYMap - 48
+            element.posY0 = element.posY
+            element.velY = 8
+            // element.posY = element.posY
+            // console.log(element, element.posY)
+            element.failling = false
+            
+            
+        } else {
+
+            console.log("flying")
+            element.falling = true
+            element.posY += element.velY
+            element.velY += this.gravity
+            
         }
 
     },
 
+    move() {
+
+        if (this.keyState.keyRight) {
+            this.moveRight()
+        }
+        if (this.keyState.keyLeft) { 
+            this.moveLeft()
+        }
+    },
 
     // Esto se tiene que refactorizar a move(direction)
     moveRight() {
@@ -199,7 +201,7 @@ const game = {
             this.player.walk("right")
             // Obstacle Checker
 
-            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 1)).length === 0) {
+            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 1, this.player.posY)).length === 0) {
 
                 this.player.posX += this.velX * 1.5
             }
@@ -207,8 +209,9 @@ const game = {
         else {
             this.player.movementProperty.centered = true
             this.player.walk("right")
+            console.log(this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 1, this.player.posY)))
 
-            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 1)).length === 0) {
+            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 1, this.player.posY)).length === 0) {
 
                 this.enemies.forEach(enemy => enemy.posX -= (this.velX * 2) + this.velX * 0.1)
                 this.map.builtMap.forEach(tile => tile.posX -= (this.velX) * .04)
@@ -224,7 +227,7 @@ const game = {
             this.player.movementProperty.centered = false
             this.player.walk("left")
 
-            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 5)).length === 0) {
+            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 5, this.player.posY)).length === 0) {
 
                 this.player.posX -= this.velX * 1.5
             }
@@ -233,7 +236,7 @@ const game = {
             this.player.movementProperty.centered = true
             this.player.walk("left")
 
-            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 5)).length === 0) {
+            if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 5, this.player.posY)).length === 0) {
 
                 this.player.posX -= this.velX
             }
@@ -242,13 +245,11 @@ const game = {
 
     jump() {
 
-        this.player.movementProperty.jumping = true
-        this.player.posY -= this.player.jumpForce
 
-
-        this.player.posY -= (- this.player.jumpForce) + this.gravity
-        // this.player.vely -= 1
-
+        if (this.player.posY == this.player.posY0) {
+            this.player.posY -= 40
+            this.player.velY -= 20
+        }
     },
 
 
@@ -261,38 +262,39 @@ const game = {
                 case this.keys.RIGHT:
                 case this.keys.D:
 
-                    this.moveRight() //Se puede refactorizar a move("direction")
+                    this.keyState.keyRight = true
                     break;
 
                 case this.keys.LEFT:
                 case this.keys.A:
 
-                    this.moveLeft()
+                    this.keyState.keyLeft = true
                     break
 
                 case this.keys.UP:
                 case this.keys.W:
 
                     this.jump()
-                // this.player.velY -= 2
+                    break
 
                 default:
                     break;
             }
         })
 
-        // Sobre todo para medir el salto
         document.addEventListener("keyup", event => {
 
             switch (event.keyCode) {
                 case this.keys.RIGHT:
                 case this.keys.D:
 
+                    this.keyState.keyRight = false
                     break;
 
                 case this.keys.LEFT:
                 case this.keys.A:
 
+                    this.keyState.keyLeft = false
                     break
 
                 default:

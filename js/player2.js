@@ -27,7 +27,8 @@ class Player {
         // this.posY = this.gameHeight - 168
         this.posX = 600
         this.posY = 100
-        this.posY0 = 624
+        this.posY0 = 700
+        // this.posY0 = 624
 
         this.keys = keys
 
@@ -36,10 +37,10 @@ class Player {
             running: false,
             moving: false, // ??
             jumping: false,
-            centered: false
+            centered: false,
+            jumpCounter: 0
         }
 
-        this.jumpForce = 800
         this.velY = 1
         this.velX = 5
         this.gravity = gravity
@@ -49,7 +50,7 @@ class Player {
         this.fireBalls = []
 
 
-        this.setListeners()
+        // this.setListeners()
 
     }
 
@@ -107,149 +108,8 @@ class Player {
 
     }
 
-    applyPhysics() {
-
-        if (this.posY < this.posY0) {
-            this.falling = true
-            this.posY += this.velY
-            this.velY += this.gravity
-        }
-        else {
-            this.falling = false
-            this.jumping = false
-            this.posY = 622
-            this.posY0 = 622
-
-        }
-        console.log(this.movementProperty.jumping)
-    }
 
 
 
-
-    setListeners() {
-
-        //Mario Moving Listener
-        // document.addEventListener("keydown", event => {
-
-        //     switch (event.keyCode) {
-
-        //         case this.keys.RIGHT:
-        //         case this.keys.D:
-        //             this.posX += this.velX
-        //             this.movementProperty.direction = "right"
-        //             this.movementProperty.moving = true
-        //             // console.log(this.movementProperty.direction)
-        //             // this.movementProperty.running = false // For later
-        //             this.walk(this.movementProperty.direction)
-        //             break
-
-        //         case this.keys.LEFT:
-        //         case this.keys.A:
-        //             this.posX -= this.velX
-        //             this.movementProperty.direction = "left"
-        //             this.movementProperty.moving = true
-        //             console.log(this.movementProperty.direction)
-        //             // this.movementProperty.running = false
-        //             this.walk(this.movementProperty.direction)
-        //             break
-
-        //         default:
-        //             break
-        //     }
-        // })
-
-        // document.addEventListener("keyup", event => {
-
-        //     switch (event.keyCode) {
-
-        //         case this.keys.RIGHT:
-        //         case this.keys.D:
-        //             this.movementProperty.moving = false
-
-        //             break;
-
-        //         default:
-        //             break;
-        //     }
-        // })
-    }
-
-    //     // Mario Still Listener
-    //     document.addEventListener("keyup", event => {
-
-    //         switch (event.keyCode) {
-    //             case this.keys.D:
-    //             case this.keys.RIGHT:
-
-    //                 // if (this.movementProperty.moving && this.movementProperty.direction === "right") {
-    //                 //     this.movementProperty.moving = false
-    //                 //     this.image.sourceX = 527
-    //                 // }
-
-    //                 if (
-    //                     this.movementProperty.direction === "right" &&
-    //                     !this.movementProperty.running &&
-    //                     !this.movementProperty.moving &&
-    //                     !this.movementProperty.jumping
-    //                 ) {
-    //                     this.movementProperty.moving = false
-    //                     this.image.sourceX = 527
-
-    //                 } 
-
-
-
-    //                 break
-
-    //             case this.keys.LEFT:
-    //             case this.keys.A:
-
-    //                 // if (this.movementProperty.moving && this.movementProperty.direction === "left") {
-    //                 //     this.movementProperty.moving = false
-    //                 //     this.image.sourceX = 508
-    //                 // }
-
-    //                 if (
-    //                     this.movementProperty.direction === "left" &&
-    //                     !this.movementProperty.running &&
-    //                     !this.movementProperty.moving &&
-    //                     !this.movementProperty.jumping
-    //                 ) {
-    //                     this.image.sourceX = 508
-    //                 }
-
-    //                 break
-
-    //             default:
-    //                 break
-    //         }
-
-    //         // this.marioStill()
-    //     })
-
-    // }
-
-
-    // marioStill() {
-
-    //     if (
-    //         this.movementProperty.direction === "right" &&
-    //         !this.movementProperty.running &&
-    //         !this.movementProperty.moving &&
-    //         !this.movementProperty.jumping
-    //     ) {
-    //         this.movementProperty.moving = false
-    //         this.image.sourceX = 527
-
-    //     } else if (
-    //         this.movementProperty.direction === "left" &&
-    //         !this.movementProperty.running &&
-    //         !this.movementProperty.moving &&
-    //         !this.movementProperty.jumping
-    //     ) {
-    //         this.image.sourceX = 508
-    //     }
-    // }
 
 }

@@ -34,6 +34,8 @@ class Map {
         // Tiles that need individual animations
         this.animatedTiles = ["240", "250", "260"]
 
+        this.availableObstacles = []
+
         // Animation Class made for Objects
         this.animationObjects = []
 
@@ -70,26 +72,18 @@ class Map {
                 this.animatedTiles.includes(this.builtMap[index].tileCode) ? this.createAnimationObjects(this.builtMap[index]) : null
                 this.obstacleTiles.includes(this.builtMap[index].tileCode) ? this.obstaclesMap.push(this.builtMap[index]) : null
                 index++
-                
-            }
-            
-        }
-
-        
+               
+            }        
+        }    
     }
-
-
 
 
     draw() {
        
         this.animationObjects.forEach(tileObject => tileObject.animateFrame())
-
         this.builtMap.forEach(tileObject => tileObject.build())
-
-        
+       
     }
-
 
     
     // Esto se puede refactorizar
@@ -104,5 +98,11 @@ class Map {
                 break;
         }
     }
+
+    // updateAvailableObstacles(agent) {
+
+    //     this.availableObstacles = (this.obstaclesMap.filter(obstacle => obstacle.posYMap > agent.posY + agent.boxSizeY))
+    //     // console.log("AVAILABLE PLATFORMS: ", this.availableObstacles)
+    // }
 
 }

@@ -31,10 +31,10 @@ class Enemy {
         this.posY = posY
         this.posY0 = posY0
 
-        this.velY = 1
+        this.velY = 8
         this.velX = velX
         this.gravity = gravity
-        this.falling = undefined
+        this.falling = false
 
     }
 
@@ -135,27 +135,27 @@ class Enemy {
         )
     }
 
-    applyPhysics() {
+    // applyPhysics() {
 
-        // if (this.posY < 624) {
-        //     this.posY += this.velY
-        //     this.velY += this.gravity
-        // }
-        // else {
-        //     this.posY0 = 624
-        //     this.posY = 624
-        // }
+    //     // if (this.posY < 624) {
+    //     //     this.posY += this.velY
+    //     //     this.velY += this.gravity
+    //     // }
+    //     // else {
+    //     //     this.posY0 = 624
+    //     //     this.posY = 624
+    //     // }
 
-        if (this.posY < 624) {
-            this.falling = true
-            this.posY += this.velY
-            this.velY += this.gravity
-        }
-        else {
-            this.falling = false
-            this.posY = 624
-            this.velY = 1
-        }
+    //     if (this.posY < 624) {
+    //         this.falling = true
+    //         this.posY += this.velY
+    //         this.velY += this.gravity
+    //     }
+    //     else {
+    //         this.falling = false
+    //         this.posY = 624
+    //         this.velY = 1
+    //     }
 
-    }
+    // }
 }
