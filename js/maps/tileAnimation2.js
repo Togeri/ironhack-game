@@ -1,8 +1,9 @@
 class AnimationObject {
 
-    constructor(mapObject, currentMap, tileType, ctx, posX, posY, tileSize, referencedTile) {
+    constructor(mapObject, currentMap, tileType, ctx, posX, posY, tileSize, referencedTile, indexID) {
 
         this.ID = `${posY}-${posX}`
+        this.indexID = indexID
         this.mapObject = mapObject
         this.currentMap = currentMap
         this.tileType = tileType

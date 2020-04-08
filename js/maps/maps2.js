@@ -88,11 +88,11 @@ class Map {
 
         switch (referencedTile.tileCode) {
             case "240":
-                this.animationObjects.push(new AnimationObject(this, map_1_1, "Question Box", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile))
+                this.animationObjects.push(new AnimationObject(this, map_1_1, "Question Box", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
                 break;
             
             case "241":
-                this.animationObjects.push(new AnimationObject(this, map_1_1, "Big Coin", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile))
+                this.animationObjects.push(new AnimationObject(this, map_1_1, "Big Coin", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
         
             default:
                 break;

@@ -7,16 +7,19 @@ const game = {
         height: undefined,
     },
 
+
     lifes: 3,
-
     score: 0,
-
+    scoreImg: undefined,
+    coins: 0,
+    time: 300,
     gameOver: false,
+    gameOverCounter: 0,
 
     scale: 3, // LA ESCALA DEL JUEGO ESTÁ A 3X
 
     FPS: 60,
-    framesCounter: 0, // Unused
+    framesCounter: 0,
 
     background: undefined, //Unused
     player: undefined,
@@ -50,17 +53,24 @@ const game = {
 
     interval: undefined,
 
-    playerRelativeX: 0, 
+    playerRelativeX: 0,
     playerRelativeY: undefined,
+
+    ctxAUDIO: undefined,
 
     sounds: {
         gameOverSound: new Audio("./sounds/music/08-you-re-dead.mp3"),
         coinSound: new Audio("./sounds/sfx/coin.wav"),
+        // gameOver: ctxAUDIO.createMediaelementSource("./sounds/music/08-you-re-dead.mp3")
+        // overWorldSound: new Audio(),
 
     },
 
 
-    gameOverCounter: 0,
+
+
+
+
 
     init() {
 
@@ -68,6 +78,8 @@ const game = {
         this.ctx = this.canvas.getContext("2d")
         this.setDimensions()
         this.setListeners()
+        this.scoreImg = new Image()
+        this.scoreImg.src = "./img/tileset2.png"
         this.start()
     },
 
@@ -96,6 +108,8 @@ const game = {
 
         this.interval = setInterval(() => {
 
+            this.time === 0 ? this.gameOver = true : null
+
             if (!this.gameOver) {
                 if (this.playerRelativeX >= 1010) {
                     alert("WON!")
@@ -109,24 +123,24 @@ const game = {
                     })
                     this.applyPhysics(this.player)
                     this.move()
-                    console.log(this.map.itemsMap)
                     this.map.itemsMap.forEach((item, index) => {
 
                         if (this.isCollisionObstacle(this.player, item, this.player.posX, this.player.posY)) {
-                            let itemID = `${item.posY}-${item.posX}`
                             this.map.animationObjects.forEach((animatedObject, index) => {
                                 
-                                if (animatedObject.ID == itemID) {
+                                if (animatedObject.indexID == item.indexID) {
 
                                     switch (animatedObject.tileCode) {
 
                                         case "241":
                                         case "251":
                                         case "261":
+                                            console.log("COIN!")
                                             this.sounds.coinSound.play()
-                                            this.score++
+                                            this.score += 100
+                                            this.coins++
                                             break;
-                                    
+
                                         default:
                                             break;
                                     }
@@ -141,6 +155,7 @@ const game = {
                 }
 
             } else {
+                this.sounds.gameOverSound.play()
                 if (this.gameOverCounter === 200) {
                     clearInterval(this.interval)
                 }
@@ -148,7 +163,6 @@ const game = {
                 this.map.draw()
                 this.enemies.forEach(enemy => enemy.draw())
                 this.player.gameOverAnimation()
-                this.sounds.gameOverSound.play()
                 this.gameOverCounter++
                 setTimeout(() => {
                     if (!this.player.gameOverAnimationStarted) {
@@ -161,6 +175,8 @@ const game = {
                 }, 900)
             }
 
+            this.framesCounter % 60 === 0 ? this.time-- : null
+            this.framesCounter++
 
         }, 1000 / this.FPS)
     },
@@ -173,6 +189,7 @@ const game = {
             enemy.isOutOfCanvas() ? this.enemies.splice(index, 1) : null
         });
         this.player.draw()
+        this.drawScore()
     },
 
     clear() {
@@ -205,7 +222,7 @@ const game = {
 
     applyPhysics(element) {
 
-        
+
 
         if (this.map.obstaclesMap.filter(obstacle => this.isCollisionObstacle(element, obstacle, element.posX, element.posY + 1)).length != 0 && !this.gameOver) {
             element.posY = this.map.obstaclesMap.filter(obstacle => this.isCollisionObstacle(element, obstacle, element.posX, element.posY + 1))[0].posYMap - 48
@@ -268,7 +285,6 @@ const game = {
             this.player.walk()
 
             if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 10, this.player.posY)).length === 0) {
-
                 this.player.posX += this.velX * 1.5
                 this.playerRelativeX++
             }
@@ -282,6 +298,9 @@ const game = {
                 this.enemies.forEach(enemy => enemy.posX -= (this.velX * 2) + this.velX * 0.1)
                 this.map.builtMap.forEach(tile => tile.posX -= (this.velX) * .04)
                 this.map.obstaclesMap.forEach(obstacle => obstacle.posXMap = obstacle.posX * obstacle.boxSizeX)
+                this.map.itemsMap.forEach(item => {
+                    item.posXMap = item.posX * item.boxSizeX
+                })
                 this.playerRelativeX++
             }
         }
@@ -393,4 +412,47 @@ const game = {
         })
     },
 
+    drawScore() {
+
+        // Mario Score
+        this.ctx.fillStyle = "white"
+        this.ctx.font = "30px 'Press Start 2P'"
+        this.ctx.fillText("MARIO", 50, 50)
+        this.ctx.fillText("x", 50, 80)
+        this.ctx.fillText(this.score, 100, 80)
+
+        // Mario Coins
+        this.ctx.drawImage(
+            this.scoreImg,
+            384,
+            16,
+            16,
+            16,
+            400,
+            25,
+            38,
+            38
+        )
+        this.ctx.fillText("x", 450, 60)
+        this.ctx.fillText(this.coins, 490, 62)
+
+        // Mario World & Level
+        this.ctx.fillText("WORLD", 750, 50)
+        this.ctx.fillText(`${this.map.world}-${this.map.level}`, 775, 80)
+
+        // Mario time
+        this.ctx.fillText("TIME", 1200, 50)
+        this.ctx.fillText(`${this.time}`, 1220, 80)
+
+    },
+
+    loadAudio() {
+
+        this.ctxAUDIO = new AudioContext()
+
+    }
 }
+
+
+
+
