@@ -117,7 +117,20 @@ const game = {
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1200, 400, 624))
         this.enemies.push(new Enemy(this.ctx, "Turtle", this.canvasSize, this.gravity, this.scale, 800, 400, 624))
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 2750, 600, 624))
-        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 2600, 600, 624))
+        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 2650, 600, 624))
+
+        this.enemies.push(new Enemy(this.ctx, "Turtle", this.canvasSize, this.gravity, this.scale, 1800, 400, 624))
+        this.enemies.push(new Enemy(this.ctx, "Turtle", this.canvasSize, this.gravity, this.scale, 1900, 400, 624))
+
+
+        for (let i = 57; i < 97; i++) {
+
+            i % 2 === 0
+                ? this.enemies.push(new Enemy(this.ctx, "Turtle", this.canvasSize, this.gravity, this.scale, (i * 100 + 21), 400, 624))
+                : this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, (i * 100 + 27), 600, 624))
+        }
+
+
         this.enemies.forEach(enemy => enemy.init())
 
         // ---------------Hasta aqui --- Todo son pruebas 
@@ -172,6 +185,7 @@ const game = {
                     }
 
                 } else {
+                    this.player.posY > 700 ? this.gameOver = true : null
                     this.clear()
                     this.drawAll()
                     this.enemies.forEach(enemy => {
@@ -179,7 +193,6 @@ const game = {
                         this.isCollisionEnemy(this.player, enemy) && this.player.playerState === "small" ? this.gameOver = true : null
                         this.isCollisionEnemy(this.player, enemy) && this.player.playerState === "starman" && enemy.enemyState != "air-death" ? this.deleteEnemyStar() : null
 
-                        this.player.posY > 700 ? this.gameOver = true : null
                         // To preven infinite loops while comparing enemies collisions
                         let finiteLoopArray = this.enemies.filter(enemy2 => enemy != enemy2)
 
@@ -206,7 +219,6 @@ const game = {
                             this.player.playerState = "small"
                             this.sounds.overWorldSound.play()
                             this.sounds.starMan.pause()
-                            clearTimeout(starmanSoundTimeOut)
                         }
                     }
                     else {
