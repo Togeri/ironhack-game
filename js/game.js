@@ -52,6 +52,9 @@ const game = {
         keyLeft: false,
         keyRight: false,
         keyUp: false,
+        keyDown: false,
+        keyJump: false,
+        keyAttack: false,
     },
 
     interval: undefined,
@@ -524,20 +527,34 @@ const game = {
                 case this.keys.RIGHT:
                 case this.keys.D:
                     this.keyState.keyRight = true
+                    pressButton(buttons[1])
                     break;
 
                 case this.keys.LEFT:
                 case this.keys.A:
                     this.keyState.keyLeft = true
+                    pressButton(buttons[3])
                     break
 
                 case this.keys.UP:
                 case this.keys.W:
                     this.keyState.keyUp = true
+                    pressButton(buttons[0])
                     break
 
                 case this.keys.O:
                     this.keyState.keyUp = true
+                    pressButton(buttons[4])
+                    break
+                
+                case this.keys.DOWN:
+                case this.keys.S:
+                    this.keyState.keyDown = true
+                    pressButton(buttons[2])
+                    break
+                
+                case this.keys.K:
+                    pressButton(buttons[5])
                     break
 
                 default:
@@ -551,20 +568,35 @@ const game = {
                 case this.keys.RIGHT:
                 case this.keys.D:
                     this.keyState.keyRight = false
+                    releaseButton(buttons[1])
                     break;
 
                 case this.keys.LEFT:
                 case this.keys.A:
                     this.keyState.keyLeft = false
+                    releaseButton(buttons[3])
                     break
 
                 case this.keys.UP:
                 case this.keys.W:
                     this.keyState.keyUp = false
+                    releaseButton(buttons[0])
                     break
 
                 case this.keys.O:
                     this.keyState.keyUp = false
+                    releaseButton(buttons[4])
+                    break
+                
+                case this.keys.DOWN:
+                case this.keys.S:
+                    this.keyState.keyDown = false
+                    releaseButton(buttons[2])
+                    break
+                
+                case this.keys.K:
+                    this.keyState.keyAttack = false
+                    releaseButton(buttons[5])
                     break
 
                 default:
