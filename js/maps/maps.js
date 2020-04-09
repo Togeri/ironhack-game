@@ -31,7 +31,7 @@ class Map {
         // Tiles that need individual animations
         this.animatedTiles = ["240", "250", "260"]
         // Tiles that Mario can Collect
-        this.itemTiles = ["241", "251", "261", ]
+        this.itemTiles = ["241", "251", "261", "644", "654", "664", "674"]
 
         // Animation Class made for Objects
         this.animationObjects = []
@@ -53,7 +53,7 @@ class Map {
 
         this.mapIdentifier = `map-${this.world}-${this.level}`
         this.image = new Image()
-        this.image.src = `img/tileset2.png`
+        this.image.src = `img/tileset3.png`
         this.mapArray = map_1_1
         let index = 0;
 
@@ -82,13 +82,18 @@ class Map {
     createAnimationObjects(referencedTile) {
 
         switch (referencedTile.tileCode) {
+            
             case "240":
                 this.animationObjects.push(new AnimationObject(this, map_1_1, "Question Box", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
                 break;
             
             case "241":
                 this.animationObjects.push(new AnimationObject(this, map_1_1, "Big Coin", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
-        
+            
+            case "644":
+                this.animationObjects.push(new AnimationObject(this, map_1_1, "Super Star", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
+
+                
             default:
                 break;
         }

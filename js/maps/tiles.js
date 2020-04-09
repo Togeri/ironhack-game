@@ -55,9 +55,8 @@ class Tile {
     }
 
     updateTileCode() {
-
+        
         if (this.tileCode.length <= 2) {
-
             this.tileCodeX = parseInt(this.tileCode[0])
             this.tileCodeY = parseInt(this.tileCode[1])
 

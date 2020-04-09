@@ -9,6 +9,17 @@
 
 30 - Brick Block (5)
 
+110 - Castle Top Transparent
+
+111 - Castle Semi Top
+
+
+121 - Castle Door Top
+
+130 - Castle Brick
+
+131 - Castle Door Black
+
 240 - Question Box 1  (28)
 
 250 - Question Box 2  (29)
@@ -63,6 +74,10 @@
 
 461 - Grass 3 (Right) (24)
 
+490 - Flag Top
+
+491 - Flag Stick
+
 850 - Cloud 1 (Top Left) (32)
 
 860 - Cloud 2 (Top Middle) (33)
@@ -74,3 +89,4 @@
 861 - Cloud 5 (Bot Middle) (36)
 
 871 - Cloud 6 (Bot Right) (37)
+

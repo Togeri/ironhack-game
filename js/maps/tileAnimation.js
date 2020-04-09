@@ -98,6 +98,23 @@ class AnimationObject {
                     }
                 }
                 break;
+            
+            case "Super Star":
+                
+                this.tileModule = 3
+
+                this.tileIndex += 0.086
+
+                if (this.tileIndex < 3) {
+                    this.currentMap[this.posY][this.posX] = (parseInt(this.tileCode) + (Math.floor((this.tileIndex % this.tileModule)) * 10)).toString()
+                        this.referencedTile.tileCode = this.currentMap[this.posY][this.posX]
+                        // this.referencedTile.updateTileCode()   
+                }
+                else {
+                    this.tileIndex = 0
+                }
+                
+                break
         
             default:
                 break;

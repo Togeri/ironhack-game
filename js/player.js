@@ -48,6 +48,8 @@ class Player {
         this.fireBalls = []
 
         this.gameOverAnimationStarted = false
+        this.gameWonAnimationStarted = false
+        this.winAnimationCastleStarted = false
     }
 
     draw() {
@@ -135,5 +137,26 @@ class Player {
         this.image.sourceX = 629
         this.image.sourceY = 34
         this.draw()
+    }
+
+    winAnimationFlag() {
+        this.movementProperty.centered = false
+    
+        if (this.posY < 624) {
+            this.image.sourceX = 646
+            this.posY +=3
+        }
+        else {
+            this.movementProperty.jumping = false
+            // this.posX = 800 + 48
+        }
+    }
+
+    winAnimationCastle() {
+
+        if (this.posX < 1056) {
+            this.posX += 4
+            this.walk("right")
+        }
     }
 }

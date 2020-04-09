@@ -15,6 +15,7 @@ const game = {
     coins: 0,
     time: 260,
     gameOver: false,
+    gameWon: false,
     gameOverCounter: 0,
     hurry: false,
 
@@ -70,6 +71,8 @@ const game = {
         stomp: new Audio("./sounds/sfx/stomp.wav"),
         powerUp: new Audio("./sounds/sfx/powerup.wav"),
         starMan: new Audio("./sounds/music/05-starman.mp3"),
+        flagPole: new Audio("./sounds/sfx/flagpole.wav"),
+        levelComplete: new Audio("./sounds/music/06-level-complete.mp3"),
 
     },
     
@@ -108,6 +111,8 @@ const game = {
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 5200, 200, 624))
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1000, 200, 624))
         this.enemies.push(new Enemy(this.ctx, "Turtle", this.canvasSize, this.gravity, this.scale, 768, 306, 624))
+        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 2750, 600, 624))
+        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 2600, 600, 624))
         this.enemies.forEach(enemy => enemy.init())
 
         // ---------------Hasta aqui --- Todo son pruebas 
@@ -122,8 +127,44 @@ const game = {
             }
 
             if (!this.gameOver) {
-                if (this.playerRelativeX >= 1010) {
-                    alert("WON!")
+
+                // Win Condition
+                if (this.playerRelativeX >= 1070) {
+
+                    this.sounds.overWorldSound.pause()
+                    this.sounds.hurryoverWorldSound.pause()
+                    this.sounds.starMan.pause()
+                    this.sounds.gameOverSound.pause()
+
+                    if (!this.player.gameWonAnimationStarted) {
+                      
+                        this.sounds.flagPole.play()
+                        setTimeout(() => {
+                            this.sounds.levelComplete.play()
+                        }, 2700)
+                        this.player.gameWonAnimationStarted = true
+                    }
+                    
+                    setTimeout(() => {
+                        this.player.winAnimationCastle()
+                    }, 3500)
+                    
+                    setTimeout(() => {
+                        this.drawCongratulations()
+                    }, 4500)
+
+                    setTimeout(() => {
+                        clearInterval(this.interval)
+                    }, 6000)
+
+                    this.clear()
+                    this.player.winAnimationFlag()
+                    
+                    this.map.draw()
+
+                    if (this.player.posX < 1056) {
+                        this.player.draw()
+                    }
 
                 } else {
                     this.clear()
@@ -151,13 +192,9 @@ const game = {
                         this.sounds.overWorldSound.pause()
                         // this.sounds.powerUp.play() // Esto se tiene que activar únicamente cuando mario pilla la estrella
                         // Adenás, en esa collision, hay que añadir 15 segundos al starTimer de Mario
+                        this.player.starmanAnimation()
+                        this.framesCounter % 60 === 0 ? this.player.starTimer-- : null
                         
-                        this.sounds.powerUp.play()
-                        let starmanSoundTimeOut = setTimeout(() => {
-                            this.sounds.starMan.play()
-                            this.framesCounter % 60 === 0 ? this.player.starTimer-- : null
-                            this.player.starmanAnimation()
-                        }, 500)
 
                         this.player.starTimer <= 0 ? this.player.playerState = "small" : null
                         if (this.player.starTimer === 0) {
@@ -190,6 +227,20 @@ const game = {
                                             this.score += 100
                                             this.coins++
                                             break;
+                                        
+                                        case "644":
+                                        case "654":
+                                        case "664":
+                                        case "674":
+                                            this.sounds.powerUp.play()
+                                            this.player.starTimer = 12
+                                            this.player.playerState = "starman"
+                                            this.score += 500
+                                            let starmanSoundTimeOut = setTimeout(() => {
+                                                this.sounds.starMan.play()
+                                            }, 500)
+                                            break
+
 
                                         default:
                                             break;
@@ -343,7 +394,7 @@ const game = {
 
             if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX + 10, this.player.posY)).length === 0) {
 
-                this.enemies.forEach(enemy => enemy.posX -= (this.velX * 2) + this.velX * 0.1)
+                this.enemies.forEach(enemy => enemy.posX -= (this.velX * 2))
                 this.map.builtMap.forEach(tile => tile.posX -= (this.velX) * .04)
                 this.map.obstaclesMap.forEach(obstacle => obstacle.posXMap = obstacle.posX * obstacle.boxSizeX)
                 this.map.itemsMap.forEach(item => {
@@ -574,6 +625,16 @@ const game = {
         this.scorePainting = this.scorePainting.filter(score => score.timer > 0)
 
     },
+
+    drawCongratulations() {
+
+        this.ctx.fillStyle = "white"
+        this.ctx.font = "90px 'Press Start 2P'"
+        this.ctx.fillText("CONGRATULATIONS!", 25, 250)
+        
+    },
+
+
 }
 
 
