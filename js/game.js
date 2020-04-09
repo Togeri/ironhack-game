@@ -13,7 +13,7 @@ const game = {
     scorePainting : [],
     scoreImg: undefined,
     coins: 0,
-    time: 260,
+    time: 200,
     gameOver: false,
     gameWon: false,
     gameOverCounter: 0,
@@ -64,7 +64,6 @@ const game = {
     sounds: {
         gameOverSound: new Audio("./sounds/music/08-you-re-dead.mp3"),
         coinSound: new Audio("./sounds/sfx/coin.wav"),
-        // gameOver: ctxAUDIO.createMediaelementSource("./sounds/music/08-you-re-dead.mp3")
         overWorldSound: new Audio("./sounds/music/01-main-theme-overworld.mp3"),
         hurryoverWorldSound: new Audio("./sounds/music/18-hurry-overworld-.mp3"),
         jump: new Audio("./sounds/sfx/jump-small.wav"),
@@ -107,10 +106,10 @@ const game = {
         this.map = new Map(this.ctx, this.scale, this.canvasSize, 1, 1, this.player)
         this.map.init()
 
-        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1100, 100, 624))
-        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 5200, 200, 624))
-        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1000, 200, 624))
-        this.enemies.push(new Enemy(this.ctx, "Turtle", this.canvasSize, this.gravity, this.scale, 768, 306, 624))
+        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1000, 600, 624))
+        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 5200, 400, 624))
+        this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1200, 400, 624))
+        this.enemies.push(new Enemy(this.ctx, "Turtle", this.canvasSize, this.gravity, this.scale, 800, 400, 624))
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 2750, 600, 624))
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 2600, 600, 624))
         this.enemies.forEach(enemy => enemy.init())
@@ -236,7 +235,7 @@ const game = {
                                             this.player.starTimer = 12
                                             this.player.playerState = "starman"
                                             this.score += 500
-                                            let starmanSoundTimeOut = setTimeout(() => {
+                                            setTimeout(() => {
                                                 this.sounds.starMan.play()
                                             }, 500)
                                             break

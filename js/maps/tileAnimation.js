@@ -99,7 +99,7 @@ class AnimationObject {
                 }
                 break;
             
-            case "Super Star":
+            case "Star":
                 
                 this.tileModule = 3
 

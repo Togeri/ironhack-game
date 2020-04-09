@@ -27,7 +27,7 @@ class Map {
         // Tiles the Player Can't Interact with 
         this.backgroundTiles = ["1", "410", "420", "430", "411", "421", "431", "441", "451", "461", "850", "860", "870", "851", "861", "871"]
         // Tiles the Player Can Interact with 
-        this.obstacleTiles = ["00", "10", "20", "30", "240", "250", "260", "270", "330", "340", "331", "341", "350", "360", "370", "351", "361", "371", ]
+        this.obstacleTiles = ["00", "01", "10", "20", "30", "240", "250", "260", "270", "330", "340", "331", "341", "350", "360", "370", "351", "361", "371", ]
         // Tiles that need individual animations
         this.animatedTiles = ["240", "250", "260"]
         // Tiles that Mario can Collect
@@ -82,7 +82,7 @@ class Map {
     createAnimationObjects(referencedTile) {
 
         switch (referencedTile.tileCode) {
-            
+
             case "240":
                 this.animationObjects.push(new AnimationObject(this, map_1_1, "Question Box", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
                 break;
@@ -91,7 +91,7 @@ class Map {
                 this.animationObjects.push(new AnimationObject(this, map_1_1, "Big Coin", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
             
             case "644":
-                this.animationObjects.push(new AnimationObject(this, map_1_1, "Super Star", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
+                this.animationObjects.push(new AnimationObject(this, map_1_1, "Star", this.ctx, referencedTile.posX, referencedTile.posY, this.tileSize, referencedTile, referencedTile.indexID))
 
                 
             default:
