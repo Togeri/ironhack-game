@@ -91,8 +91,10 @@ const game = {
 
     setDimensions() {
 
-        this.canvasSize.width = window.innerWidth   //Esta linea y la 39 creo que sobran
-        this.canvasSize.height = window.innerHeight - 5    // He tenido que hacer una ñapa porque si pongo el innerHeigth se me pone una scrollbar a la derecha como que el canvan ocupa más del window.Heigth
+        this.canvasSize.width = 1440   //Esta linea y la 39 creo que sobran
+        // this.canvasSize.width = window.innerWidth   //Esta linea y la 39 creo que sobran
+        this.canvasSize.height = 791   // He tenido que hacer una ñapa porque si pongo el innerHeigth se me pone una scrollbar a la derecha como que el canvan ocupa más del window.Heigth
+        // this.canvasSize.height = window.innerHeight - 5    // He tenido que hacer una ñapa porque si pongo el innerHeigth se me pone una scrollbar a la derecha como que el canvan ocupa más del window.Heigth
         this.canvas.width = this.canvasSize.width
         this.canvas.height = this.canvasSize.height
     },
