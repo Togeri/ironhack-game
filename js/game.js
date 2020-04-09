@@ -68,8 +68,12 @@ const game = {
         hurryoverWorldSound: new Audio("./sounds/music/18-hurry-overworld-.mp3"),
         jump: new Audio("./sounds/sfx/jump-small.wav"),
         stomp: new Audio("./sounds/sfx/stomp.wav"),
+        powerUp: new Audio("./sounds/sfx/powerup.wav"),
+        starMan: new Audio("./sounds/music/05-starman.mp3"),
 
     },
+    
+ 
 
     init() {
 
@@ -103,6 +107,7 @@ const game = {
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1100, 100, 624))
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 5200, 200, 624))
         this.enemies.push(new Enemy(this.ctx, "Goompa", this.canvasSize, this.gravity, this.scale, 1000, 200, 624))
+        this.enemies.push(new Enemy(this.ctx, "Turtle", this.canvasSize, this.gravity, this.scale, 768, 306, 624))
         this.enemies.forEach(enemy => enemy.init())
 
         // ---------------Hasta aqui --- Todo son pruebas 
@@ -125,20 +130,50 @@ const game = {
                     this.drawAll()
                     this.enemies.forEach(enemy => {
                         this.applyPhysics(enemy)
-                        this.isCollisionEnemy(this.player, enemy) ? this.gameOver = true : null
-                        
+                        this.isCollisionEnemy(this.player, enemy) && this.player.playerState === "small" ? this.gameOver = true : null
+                        this.isCollisionEnemy(this.player, enemy) && this.player.playerState === "starman" && enemy.enemyState != "air-death" ? this.deleteEnemyStar() : null
+
+                        this.player.posY > 700 ? this.gameOver = true : null
+                        // To preven infinite loops while comparing enemies collisions
                         let finiteLoopArray = this.enemies.filter(enemy2 => enemy != enemy2) 
 
-                        // Enemies Collision
+                        // Enemy-Obstacle & Enemy-Enemy Collisions
                         if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(enemy, element, enemy.posX + 1, enemy.posY)).length != 0 && !enemy.falling ||
                             this.map.obstaclesMap.filter(element => this.isCollisionObstacle(enemy, element, enemy.posX - 1, enemy.posY)).length != 0 && !enemy.falling ||
                             finiteLoopArray.filter(element => this.isCollisionEnemy(enemy, element)).length != 0 && !enemy.falling) {
                             enemy.velX *= -1 
                         }
                     })
+                    
                     this.applyPhysics(this.player)
+                    if (this.player.playerState === "starman") {
+                        
+                        this.sounds.overWorldSound.pause()
+                        // this.sounds.powerUp.play() // Esto se tiene que activar únicamente cuando mario pilla la estrella
+                        // Adenás, en esa collision, hay que añadir 15 segundos al starTimer de Mario
+                        
+                        this.sounds.powerUp.play()
+                        let starmanSoundTimeOut = setTimeout(() => {
+                            this.sounds.starMan.play()
+                            this.framesCounter % 60 === 0 ? this.player.starTimer-- : null
+                            this.player.starmanAnimation()
+                        }, 500)
+
+                        this.player.starTimer <= 0 ? this.player.playerState = "small" : null
+                        if (this.player.starTimer === 0) {
+                            this.player.playerState = "small"
+                            this.sounds.overWorldSound.play()
+                            this.sounds.starMan.pause()
+                            clearTimeout(starmanSoundTimeOut)
+                        }
+                    }
+                    else { 
+                        // this.applyPhysics(this.player)
+                        this.checkStomp()
+                    }
+                    // this.applyPhysics(this.player)
                     this.move()
-                    this.checkStomp()
+
                     this.map.itemsMap.forEach((item, index) => {
 
                         if (this.isCollisionObstacle(this.player, item, this.player.posX, this.player.posY)) {
@@ -151,7 +186,6 @@ const game = {
                                         case "241":
                                         case "251":
                                         case "261":
-                                            console.log("COIN!")
                                             this.sounds.coinSound.play()
                                             this.score += 100
                                             this.coins++
@@ -173,6 +207,7 @@ const game = {
             } else {
                 this.sounds.overWorldSound.pause()
                 this.sounds.hurryoverWorldSound.pause()
+                this.sounds.starMan.pause()
                 this.sounds.gameOverSound.play()
                 if (this.gameOverCounter === 200) {
                     clearInterval(this.interval)
@@ -226,12 +261,14 @@ const game = {
     // Needs refactoring: La importancia de nombrar bien las variables
     isCollisionObstacle(element1, element2, posX, posY) {
 
-        return (
-            posY + element1.boxSizeY > element2.posYMap && // TOP
-            posX < element2.posXMap + element2.boxSizeX && // RIGHT
-            posY < element2.posYMap + element2.boxSizeY && // BOT
-            posX + element1.boxSizeX > element2.posXMap // LEFT
-        )
+        if (element1.enemyState != "air-death") {
+            return (
+                posY + element1.boxSizeY > element2.posYMap && // TOP
+                posX < element2.posXMap + element2.boxSizeX && // RIGHT
+                posY < element2.posYMap + element2.boxSizeY && // BOT
+                posX + element1.boxSizeX > element2.posXMap // LEFT
+            )
+        }
     },
 
     applyPhysics(element) {
@@ -372,22 +409,56 @@ const game = {
     checkStomp() {
         // Stomping Enemies
         if (this.enemies.filter(enemy => this.isCollisionEnemy(this.player, enemy, this.player.posX, this.player.posY + 1)).length != 0 &&
-            this.player.falling === true && !this.gameOver) {
-            console.log("PLAYER IS FALLING!", this.player.falling)
-            currentEnemies = this.enemies.filter(enemy => this.isCollisionEnemy(this.player, enemy, this.player.posX, this.player.posY + 1))
-            let erasedEnemyArray
-            currentEnemies.forEach(enemy => {
-                enemy.receiveDamage()
-                this.addScore(100, enemy.posX, enemy.posY)
-                this.score += 100
-                erasedEnemyArray = this.enemies.filter(enemy2 => enemy != enemy2) 
-            })
-            this.player.posY -= 20
-            this.player.velY -= 20
-            this.sounds.stomp.play()
+        this.player.falling === true && !this.gameOver) {
+            this.deleteEnemy()
+        }
+    },
+
+    deleteEnemy() {
+        let currentEnemies = this.enemies.filter(enemy => this.isCollisionEnemy(this.player, enemy, this.player.posX, this.player.posY + 1))
+        let erasedEnemyArray
+        let clearEnemy = false
+        currentEnemies.forEach(enemy => {
+            enemy.receiveDamage(this.player.playerState)
+            this.addScore(100, enemy.posX, enemy.posY)
+            this.score += 100
+            if (enemy.enemyState === "dead") {
+                clearEnemy = true
+                erasedEnemyArray = this.enemies.filter(enemy2 => enemy != enemy2)
+            }
+
+        })
+        this.player.velY = 12
+        this.player.posY -= 20
+        this.player.velY -= 20
+        this.sounds.stomp.play()
+        if (clearEnemy) {
             setTimeout(() => {
                 this.enemies = erasedEnemyArray
-            }, 500)
+            }, 400)
+        }
+
+    },
+    
+    deleteEnemyStar() {
+        let currentEnemies = this.enemies.filter(enemy => this.isCollisionEnemy(this.player, enemy, this.player.posX, this.player.posY + 1))
+        let erasedEnemyArray
+        let clearEnemy = false
+        currentEnemies.forEach(enemy => {
+            enemy.receiveDamage(this.player.playerState)
+            this.addScore(100, enemy.posX, enemy.posY)
+            this.score += 100
+            if (enemy.enemyState === "dead") {
+                clearEnemy = true
+                erasedEnemyArray = this.enemies.filter(enemy2 => enemy != enemy2)
+            }
+
+        })
+        this.sounds.stomp.play()
+        if (clearEnemy) {
+            setTimeout(() => {
+                this.enemies = erasedEnemyArray
+            }, 1400)
         }
     },
 

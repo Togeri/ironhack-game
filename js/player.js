@@ -14,10 +14,11 @@ class Player {
         this.boxSizeY = this.spriteHeight * this.scale
 
         this.image = new Image()
-        this.image.src = "./img/mario-full.png"
+        this.image.src = "./img/mario-full3.png"
 
         this.image.frames = 4
         this.image.framesIndex = 0
+        this.image.framesIndexY = 0
         this.image.sourceX = 527
         this.image.sourceY = 34
 
@@ -41,7 +42,8 @@ class Player {
         this.gravity = gravity
         this.falling = false
 
-        this.playerState = undefined // Controlling Mario's States
+        this.playerState = "small" // Controlling Mario's States
+        this.starTimer = 0
 
         this.fireBalls = []
 
@@ -78,28 +80,30 @@ class Player {
     }
 
     //Animacion
-    walk() { 
+    walk() {
         //Falta añadir estado Mario Grande
         if (!this.movementProperty.jumping) {
-            switch (this.movementProperty.direction) {
 
-                case "right":
-                    this.movementProperty.moving = true
-                    this.image.framesIndex += 0.5
-                    this.image.framesIndex == 4 ? this.image.framesIndex = 0 : null
-                    this.image.sourceX = 527 + this.spriteWidth * (Math.floor(this.image.framesIndex) % 4) + this.image.framesIndex
-                    break
-
-                case "left":
-                    this.movementProperty.moving = true
-                    this.image.framesIndex -= 0.5
-                    this.image.framesIndex == -4 ? this.image.framesIndex = 0 : null
-                    this.image.sourceX = 508 + this.spriteWidth * (Math.floor(this.image.framesIndex % 4)) + this.image.framesIndex
-                    break
-                
-                default:
-                    break
-            }
+                switch (this.movementProperty.direction) {
+    
+                    case "right":
+                        this.movementProperty.moving = true
+                        this.image.framesIndex += 0.5
+                        this.image.framesIndex == 4 ? this.image.framesIndex = 0 : null
+                        this.image.sourceX = 527 + this.spriteWidth * (Math.floor(this.image.framesIndex) % 4) + this.image.framesIndex
+                        break
+    
+                    case "left":
+                        this.movementProperty.moving = true
+                        this.image.framesIndex -= 0.5
+                        this.image.framesIndex == -4 ? this.image.framesIndex = 0 : null
+                        this.image.sourceX = 508 + this.spriteWidth * (Math.floor(this.image.framesIndex % 4)) + this.image.framesIndex
+                        break
+                    
+                    default:
+                        break
+                }
+          
         }
     }
 
@@ -116,6 +120,14 @@ class Player {
             default:
                 break;
         }
+
+    }
+
+    starmanAnimation() {
+
+        this.image.framesIndexY += 0.5
+        this.image.framesIndexY == 5 ? this.image.framesIndexY = 0 : null
+        this.image.sourceY = 34 + 64 * (Math.floor(this.image.framesIndexY % 5))
 
     }
 
