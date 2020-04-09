@@ -10,7 +10,7 @@ const game = {
 
     lifes: 3,
     score: 0,
-    scorePainting : [],
+    scorePainting: [],
     scoreImg: undefined,
     coins: 0,
     time: 200,
@@ -74,8 +74,8 @@ const game = {
         levelComplete: new Audio("./sounds/music/06-level-complete.mp3"),
 
     },
-    
- 
+
+
 
     init() {
 
@@ -99,6 +99,7 @@ const game = {
         this.canvas.height = this.canvasSize.height
     },
 
+    
     start() {
 
         // ---------------Todo esto son pruebas que luego serán sustituidas por un "mapLoad() method, sobre todo la parte de enemies"
@@ -138,18 +139,18 @@ const game = {
                     this.sounds.gameOverSound.pause()
 
                     if (!this.player.gameWonAnimationStarted) {
-                      
+
                         this.sounds.flagPole.play()
                         setTimeout(() => {
                             this.sounds.levelComplete.play()
                         }, 2700)
                         this.player.gameWonAnimationStarted = true
                     }
-                    
+
                     setTimeout(() => {
                         this.player.winAnimationCastle()
                     }, 3500)
-                    
+
                     setTimeout(() => {
                         this.drawCongratulations()
                     }, 4500)
@@ -160,7 +161,7 @@ const game = {
 
                     this.clear()
                     this.player.winAnimationFlag()
-                    
+
                     this.map.draw()
 
                     if (this.player.posX < 1056) {
@@ -177,25 +178,25 @@ const game = {
 
                         this.player.posY > 700 ? this.gameOver = true : null
                         // To preven infinite loops while comparing enemies collisions
-                        let finiteLoopArray = this.enemies.filter(enemy2 => enemy != enemy2) 
+                        let finiteLoopArray = this.enemies.filter(enemy2 => enemy != enemy2)
 
                         // Enemy-Obstacle & Enemy-Enemy Collisions
                         if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(enemy, element, enemy.posX + 1, enemy.posY)).length != 0 && !enemy.falling ||
                             this.map.obstaclesMap.filter(element => this.isCollisionObstacle(enemy, element, enemy.posX - 1, enemy.posY)).length != 0 && !enemy.falling ||
                             finiteLoopArray.filter(element => this.isCollisionEnemy(enemy, element)).length != 0 && !enemy.falling) {
-                            enemy.velX *= -1 
+                            enemy.velX *= -1
                         }
                     })
-                    
+
                     this.applyPhysics(this.player)
                     if (this.player.playerState === "starman") {
-                        
+
                         this.sounds.overWorldSound.pause()
                         // this.sounds.powerUp.play() // Esto se tiene que activar únicamente cuando mario pilla la estrella
                         // Adenás, en esa collision, hay que añadir 15 segundos al starTimer de Mario
                         this.player.starmanAnimation()
                         this.framesCounter % 60 === 0 ? this.player.starTimer-- : null
-                        
+
 
                         this.player.starTimer <= 0 ? this.player.playerState = "small" : null
                         if (this.player.starTimer === 0) {
@@ -205,7 +206,7 @@ const game = {
                             clearTimeout(starmanSoundTimeOut)
                         }
                     }
-                    else { 
+                    else {
                         // this.applyPhysics(this.player)
                         this.checkStomp()
                     }
@@ -216,7 +217,7 @@ const game = {
 
                         if (this.isCollisionObstacle(this.player, item, this.player.posX, this.player.posY)) {
                             this.map.animationObjects.forEach((animatedObject, index) => {
-                                
+
                                 if (animatedObject.indexID == item.indexID) {
 
                                     switch (animatedObject.tileCode) {
@@ -228,7 +229,7 @@ const game = {
                                             this.score += 100
                                             this.coins++
                                             break;
-                                        
+
                                         case "644":
                                         case "654":
                                         case "664":
@@ -415,7 +416,7 @@ const game = {
             this.player.walk()
 
             if (this.map.obstaclesMap.filter(element => this.isCollisionObstacle(this.player, element, this.player.posX - 10, this.player.posY)).length === 0 &&
-            this.player.posX > 0) {
+                this.player.posX > 0) {
 
                 this.player.posX -= this.velX * 1.5
                 this.playerRelativeX--
@@ -461,7 +462,7 @@ const game = {
     checkStomp() {
         // Stomping Enemies
         if (this.enemies.filter(enemy => this.isCollisionEnemy(this.player, enemy, this.player.posX, this.player.posY + 1)).length != 0 &&
-        this.player.falling === true && !this.gameOver) {
+            this.player.falling === true && !this.gameOver) {
             this.deleteEnemy()
         }
     },
@@ -491,7 +492,7 @@ const game = {
         }
 
     },
-    
+
     deleteEnemyStar() {
         let currentEnemies = this.enemies.filter(enemy => this.isCollisionEnemy(this.player, enemy, this.player.posX, this.player.posY + 1))
         let erasedEnemyArray
@@ -534,7 +535,7 @@ const game = {
                 case this.keys.W:
                     this.keyState.keyUp = true
                     break
-                
+
                 case this.keys.O:
                     this.keyState.keyUp = true
                     break
@@ -561,7 +562,7 @@ const game = {
                 case this.keys.W:
                     this.keyState.keyUp = false
                     break
-                
+
                 case this.keys.O:
                     this.keyState.keyUp = false
                     break
@@ -618,7 +619,7 @@ const game = {
         this.ctx.fillText(`${this.time}`, 1220, 80)
 
         // Stomp & Coins Score
-        this.scorePainting.forEach(score => { 
+        this.scorePainting.forEach(score => {
             this.ctx.font = "15px 'Press Start 2P'"
             this.ctx.fillText(score.points, score.posX, score.posY)
             score.timer--
@@ -632,7 +633,7 @@ const game = {
         this.ctx.fillStyle = "white"
         this.ctx.font = "90px 'Press Start 2P'"
         this.ctx.fillText("CONGRATULATIONS!", 25, 250)
-        
+
     },
 
 
