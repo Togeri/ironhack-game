@@ -7,12 +7,39 @@
 
 body {
     background-color: rgb(199, 199, 199);
-    /* background-color: black */
+    background-color: rgb(90, 90, 90)
+}
+
+.button-container {
+    width: 1440px;
+    height: 791px;
+    display: flex;
+    margin: auto;
+}
+
+#startButton {
+    background-color: tomato;
+    border: none;
+    width: 500px;
+    height: 500px;
+    margin: auto;
+    border-radius: 50%;
+    color: white;
+    font-family: 'Press Start 2P';
+    font-size: 40px;
+    padding-left: 5px;
 }
 
 #canvas {
     display: flex;
     margin: auto;
+    border: 8px solid rgb(199, 199, 199);
+    border-radius: 10px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    width: 1440px;
+    height: 791px;
+    display: none;
 
 }
 
@@ -21,7 +48,7 @@ body {
     padding-left: 100px;
     display: flex;
     background-color: black;
-    height: 150px;
+    height: 140px;
     justify-content: space-evenly;
 }
 
@@ -62,6 +89,7 @@ body {
 .menu {
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .menu div {

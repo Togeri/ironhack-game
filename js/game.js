@@ -13,7 +13,7 @@ const game = {
     scorePainting: [],
     scoreImg: undefined,
     coins: 0,
-    time: 200,
+    time: 160,
     gameOver: false,
     gameWon: false,
     gameOverCounter: 0,
