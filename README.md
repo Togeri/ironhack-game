@@ -18,7 +18,7 @@ Enjoy!
 
 Really?
 
-## Tecnologies
+## Technologies
 
 * JavaScript
 * HTML5
