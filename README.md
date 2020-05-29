@@ -1,6 +1,6 @@
 # Super Mario 64 - IronHack Edition
 
-**You can access the game by clicking [here](https://togeri.github.io/ironhack-game/)**
+**You can access the game by clicking :point_right: [here](https://togeri.github.io/ironhack-game/)** :point_left:
 
 This is a modified replica of classic Super Mario Bros. 64 videogame.
 
